@@ -3,273 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fatin Faziana — Teach. Trade. Build.</title>
-<meta name="description" content="Fatin Faziana — IGCSE teacher & tutor, trader, and creator of open-source projects.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0e1411; --bg2:#141c18; --ink:#eef1e6; --muted:#9aa89e; --line:rgba(238,241,230,.12);
-  --chalk:#f4d35e;   /* teacher */
-  --bull:#3ddc97;    /* trader  */
-  --bear:#ff6b6b;
-  --code:#8ab4ff;    /* creator */
-  --accent:var(--chalk);
-  --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace; --hand:'Caveat',cursive;
-}
-body[data-mode="teach"]{--accent:var(--chalk)}
-body[data-mode="trade"]{--accent:var(--bull)}
-body[data-mode="build"]{--accent:var(--code)}
-*{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font:400 17px/1.65 var(--sans);transition:background .6s}
-a{color:inherit}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-/* nav */
-nav{position:fixed;inset:0 0 auto 0;z-index:10;background:rgba(14,20,17,.8);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;justify-content:space-between;align-items:center;height:60px}
-nav .logo{font:700 20px var(--serif);text-decoration:none}
-nav .logo i{color:var(--accent);font-style:normal;transition:color .5s}
-nav ul{display:flex;gap:26px;list-style:none;padding:0;font-size:14px}
-nav ul a{text-decoration:none;color:var(--muted);transition:color .2s}
-nav ul a:hover{color:var(--accent)}
-/* hero */
-.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:60px}
-#chart{position:absolute;inset:0;width:100%;height:100%;opacity:.35}
-.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,transparent 20%,var(--bg) 85%)}
-.hero .wrap{position:relative;z-index:2}
-.eyebrow{font:500 13px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);transition:color .5s}
-h1{font:700 clamp(54px,10vw,128px)/.95 var(--serif);letter-spacing:-.03em;margin:18px 0 26px}
-h1 span{display:block}
-h1 .t{color:var(--chalk)} h1 .r{color:var(--bull)} h1 .b{color:var(--code)}
-h1 .t::after{content:"";display:inline-block;width:.45em;height:.06em;background:var(--chalk);margin-left:.1em;border-radius:3px;transform:rotate(-3deg)}
-.lead{max-width:560px;color:var(--muted);font-size:20px}
-.lead b{color:var(--ink);font-weight:500}
-.cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
-.btn{padding:13px 24px;border-radius:999px;text-decoration:none;font-weight:600;font-size:15px;border:1px solid var(--line);transition:.25s}
-.btn.p{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.btn:hover{transform:translateY(-2px);border-color:var(--accent);color:var(--accent)}
-.btn.p:hover{background:var(--accent);color:var(--bg)}
-/* sections */
-section{padding:120px 0;border-top:1px solid var(--line)}
-.tag{font:500 13px var(--mono);color:var(--accent);letter-spacing:.1em;text-transform:uppercase;transition:color .5s}
-h2{font:700 clamp(36px,5vw,58px)/1.1 var(--serif);margin:12px 0 22px;letter-spacing:-.02em}
-.sub{color:var(--muted);max-width:620px;margin-bottom:48px}
-.reveal{opacity:0;transform:translateY(24px);transition:.8s cubic-bezier(.2,.7,.2,1)}
-.reveal.in{opacity:1;transform:none}
-/* about */
-.about{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
-.about p+p{margin-top:16px}
-.about p{color:#c9d2c4}
-.facts{display:grid;gap:14px}
-.fact{padding:20px 24px;border:1px solid var(--line);border-radius:14px;background:var(--bg2);display:flex;gap:18px;align-items:center}
-.fact em{font:700 34px var(--serif);font-style:normal;min-width:64px}
-.fact:nth-child(1) em{color:var(--chalk)}.fact:nth-child(2) em{color:var(--bull)}.fact:nth-child(3) em{color:var(--code)}
-.fact span{color:var(--muted);font-size:15px;line-height:1.4}
-/* teach: chalkboard */
-.board{background:#1b2a23;border:10px solid #5a4632;border-radius:10px;padding:40px;box-shadow:inset 0 0 60px rgba(0,0,0,.4),0 20px 50px rgba(0,0,0,.4);position:relative}
-.board h3{font:700 40px var(--hand);color:var(--chalk);margin-bottom:6px}
-.board .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;margin-top:24px}
-.board h4{font:600 28px var(--hand);color:#fff;border-bottom:2px dashed rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:10px}
-.board p,.board li{font:600 21px/1.4 var(--hand);color:#dfe8d9;list-style:none;padding:0}
-.board li::before{content:"✓ ";color:var(--chalk)}
-.equation{position:absolute;right:30px;bottom:18px;font:700 26px var(--hand);color:rgba(244,211,94,.55);transform:rotate(-4deg)}
-/* trade */
-.trade-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:32px}
-.panel{border:1px solid var(--line);border-radius:16px;background:var(--bg2);padding:28px}
-.panel h3{font:600 14px var(--mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
-.rules{list-style:none;padding:0;counter-reset:r}
-.rules li{counter-increment:r;padding:14px 0;border-bottom:1px solid var(--line);display:flex;gap:16px}
-.rules li:last-child{border:0}
-.rules li::before{content:"0" counter(r);font:500 14px var(--mono);color:var(--bull);padding-top:3px}
-.rules b{display:block;font-weight:600}
-.rules span{color:var(--muted);font-size:15px}
-.ticker{font:500 14px var(--mono);display:grid;gap:10px}
-.ticker div{display:flex;justify-content:space-between;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.03)}
-.up{color:var(--bull)}.dn{color:var(--bear)}
-.disc{font-size:13px;color:var(--muted);margin-top:22px}
-/* build */
-.repos{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px}
-.repo{display:block;text-decoration:none;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0b0f14;transition:.3s}
-.repo:hover{transform:translateY(-5px);border-color:var(--code);box-shadow:0 14px 40px rgba(138,180,255,.12)}
-.repo .bar{display:flex;gap:6px;padding:10px 14px;background:#151b23}
-.repo .bar i{width:10px;height:10px;border-radius:50%;background:#394350}
-.repo .bar i:nth-child(1){background:#ff5f56}.repo .bar i:nth-child(2){background:#ffbd2e}.repo .bar i:nth-child(3){background:#27c93f}
-.repo .body{padding:20px;font-family:var(--mono)}
-.repo .n{color:var(--code);font-size:15px;font-weight:500}
-.repo .n::before{content:"$ ";color:var(--bull)}
-.repo p{font:400 14px/1.55 var(--sans);color:#b4bfcb;margin:10px 0 16px;min-height:66px}
-.repo .meta{font-size:12px;color:var(--muted);display:flex;gap:14px}
-.more{margin-top:30px}
-/* contact */
-.contact{text-align:center}
-.contact h2{font-size:clamp(40px,7vw,84px)}
-.contact h2 em{font-style:normal;color:var(--accent);transition:color .5s}
-.links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
-footer{padding:30px 0;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
-@media(max-width:800px){nav ul{display:none}.about,.trade-grid{grid-template-columns:1fr}section{padding:80px 0}.board{padding:24px}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
-</style>
+<title>Fatin Faziana — Teacher, Trader & Creator</title>
+<meta name="description" content="Fatin Faziana: IGCSE Accounting, Economics & Business Studies teacher, trader and creator.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=38">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
-<body data-mode="teach">
+<body>
+<div id="gl"></div>
+<div class="vig"></div>
+<header class="brand"><div class="wm">Fatin Faziana</div><div class="sub">Teacher · Trader · Creator</div></header>
+<nav class="crumb" id="crumb" aria-label="Where you are"></nav>
+<div class="stage-ui"><p id="cap" class="cap"></p><div class="chips" id="chips"></div></div>
+<button id="mus" class="chip2 snd mus" aria-label="Change background music">♪ Music</button>
+<button id="snd" class="chip2 snd" aria-label="Toggle click sounds">Sound on</button>
+<div id="fade"></div>
+<div id="veil" role="dialog" aria-modal="true"><div id="panel"><button id="x" aria-label="Close">×</button><div id="pc"></div></div></div>
 
-<nav><div class="wrap">
-  <a class="logo" href="#top">Fatin<i>.</i></a>
-  <ul>
-    <li><a href="#about">About</a></li>
-    <li><a href="#teach">Teach</a></li>
-    <li><a href="#trade">Trade</a></li>
-    <li><a href="#build">Build</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</div></nav>
+<template id="p-about" data-c="#fde38a">
+<span class="k">01 · About myself</span><h2>Hi, I'm Fatin.</h2>
+<p class="lead">An educator from Malaysia who teaches IGCSE Accounting, Economics and Business Studies, trades the markets with a plan, and builds small tools in her spare time.</p>
+<div class="row"><div><em>8 yrs</em><span>in education</span></div><div><em>6+ yrs</em><span>teaching IGCSE</span></div><div><em>5 yrs</em><span>as a business lecturer</span></div></div>
+<h3>Background</h3>
+<ul class="list"><li><b>Master's in Business</b> and <b>Bachelor's in Business Administration</b></li><li><b>Subjects:</b> IGCSE Accounting, Economics, Business Studies</li><li><b>Also:</b> trading, and building websites and apps with AI</li></ul>
+<h3>What drives me</h3>
+<p>Understanding beats memorising. Mistakes are information. If I can explain something plainly, I have really understood it.</p>
+<div class="btns"><a class="btn p" href="https://my-first-project-y3iv.vercel.app/" target="_blank" rel="noopener">Tuition enquiries ↗</a><a class="btn" href="mailto:fatinfazianalearn@gmail.com">Email me</a><a class="btn" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">GitHub ↗</a></div>
+</template>
 
-<header class="hero" id="top" data-mode="teach">
-  <canvas id="chart" aria-hidden="true"></canvas>
-  <div class="wrap">
-    <p class="eyebrow">Fatin Faziana · Portfolio</p>
-    <h1><span class="t">Teach.</span><span class="r">Trade.</span><span class="b">Build.</span></h1>
-    <p class="lead">I'm an <b>IGCSE teacher &amp; tutor</b> — founder of <b>Asterisk Academy</b> (<i>Changing U to A</i>) — who turns hard ideas into clear ones, a <b>trader</b> who treats the market like a discipline, and a <b>creator</b> who ships small projects on GitHub. Three hats, one habit: <b>learn it, then make it simple.</b></p>
-    <div class="cta">
-      <a class="btn p" href="#contact">Book a trial class</a>
-      <a class="btn" href="#build">See my projects</a>
-    </div>
-  </div>
-</header>
+<template id="p-exp" data-c="#ef95b0">
+<span class="k">02 · Experience</span><h2>A timeline.</h2>
+<ol class="tl">
+<li><span class="yr">2017</span><b>Started teaching</b><span class="d">Began as a business lecturer for adult learners.</span></li>
+<li><span class="yr">2019</span><b>Moved into IGCSE</b><span class="d">Started teaching Accounting and Business Studies, with Economics alongside.</span></li>
+<li><span class="yr">2022</span><b>Leading and tutoring</b><span class="d">Became a Department Leader and began independent one-to-one tuition. Lecturing concluded after five years.</span></li>
+<li><span class="yr">2025</span><b>Full focus on students and craft</b><span class="d">Department leadership completed. Today: tuition, trading and building projects.</span></li>
+</ol>
+</template>
 
-<section id="about" data-mode="teach"><div class="wrap about">
-  <div class="reveal">
-    <p class="tag">// about me</p>
-    <h2>Same mindset, three arenas.</h2>
-    <p>In the classroom, I help students understand <i>why</i>, not just memorise <i>what</i> — because that's what carries them through IGCSE exams and beyond.</p>
-    <p>On the charts, I apply the same patience: study the pattern, plan the risk, review the result, repeat.</p>
-    <p>And when I'm curious about something, I build it. My GitHub is where those experiments live.</p>
-  </div>
-  <div class="facts reveal">
-    <div class="fact"><em>IGCSE</em><span>Teaching &amp; one-to-one / small-group tuition</span></div>
-    <div class="fact"><em>Risk</em><span>First rule of trading: protect the capital</span></div>
-    <div class="fact"><em>Code</em><span>Open-source projects, built to be useful</span></div>
-  </div>
-</div></section>
+<template id="p-impact" data-c="#cfc2ea">
+<span class="k">03 · Contributions</span><h2>From struggling to A.</h2>
+<div class="quote">Every student can improve. They just need someone to find where it breaks.</div>
+<div class="row"><div><em>50% A</em><span>in Accounting, Business Studies and Economics under my leadership</span></div><div><em>6+ yrs</em><span>of IGCSE results work</span></div></div>
+<h3>How I do it</h3>
+<ol class="steps"><li><b>Find the gap.</b> Diagnose exactly which topics and habits cost marks.</li><li><b>Rebuild understanding.</b> Explain step by step until it makes sense, not just memorised.</li><li><b>Practise with purpose.</b> Past-year topical questions, checked thoroughly.</li><li><b>Exam technique.</b> Timing and mark-scheme thinking, so knowledge turns into grades.</li></ol>
+<h3>Beyond the classroom</h3>
+<ul class="list"><li>Organised <b>entrepreneurship events</b> for students, which received national media coverage.</li><li>Mentored a student project to <b>3rd place</b> at a university competition.</li></ul>
+</template>
 
-<section id="teach" data-mode="teach"><div class="wrap">
-  <p class="tag reveal">// 01 — the teacher</p>
-  <h2 class="reveal">Learning that actually sticks.</h2>
-  <p class="sub reveal">Accounting, Business Studies and Economics at Asterisk Academy — online or at home, in small groups or one-to-one.</p>
-  <div class="board reveal">
-    <h3>Asterisk Academy · Changing U to A</h3>
-    <div class="grid">
-      <div><h4>Understand</h4><p>Concepts explained step by step, with real examples — no skipping the "why".</p></div>
-      <div><h4>Practise</h4><p>Past-paper questions, worked solutions, and targeted drills on weak spots.</p></div>
-      <div><h4>Perform</h4><p>Exam technique, time management, and mark-scheme thinking.</p></div>
-      <div><h4>Subjects</h4><ul><li>Accounting</li><li>Business Studies</li><li>Economics</li></ul></div>
-      <div><h4>Fees (per class, per subject)</h4><p>Group: RM 70 online · RM 80 home<br>One-to-one: RM 90 online · RM 100 home<br>Trial class: RM 30</p></div>
-    </div>
-    <div class="equation">y = understanding + practice</div>
-  </div>
-</div></section>
+<template id="p-trading" data-c="#cfc2ea">
+<span class="k">04 · Beyond teaching</span><h2>Trading.</h2>
+<p class="lead">I treat trading like exam prep: study it, practise it, review it.</p>
+<h3>My rules</h3>
+<ul class="list"><li><b>Risk first.</b> Know the loss before entering; size accordingly.</li><li><b>Trade the plan.</b> Defined setups and exits, no improvising.</li><li><b>Journal everything.</b> Review every week.</li><li><b>Keep learning.</b> Markets change, so study never stops.</li></ul>
+<p class="note">A personal approach, not financial advice. Trading involves risk of loss.</p>
+</template>
 
-<section id="trade" data-mode="trade"><div class="wrap">
-  <p class="tag reveal">// 02 — the trader</p>
-  <h2 class="reveal">Process over prediction.</h2>
-  <p class="sub reveal">I don't chase tips. I follow a plan, keep a journal, and review honestly — the way a good student reviews a mock exam.</p>
-  <div class="trade-grid">
-    <div class="panel reveal">
-      <h3>My trading rules</h3>
-      <ul class="rules">
-        <li><div><b>Risk first</b><span>Know the loss before the entry. Size every position accordingly.</span></div></li>
-        <li><div><b>Trade the plan</b><span>Defined setups, defined exits. No improvising when emotions run high.</span></div></li>
-        <li><div><b>Journal everything</b><span>Every trade logged, every week reviewed. Data beats memory.</span></div></li>
-        <li><div><b>Keep learning</b><span>Markets change. Curiosity is the edge that doesn't expire.</span></div></li>
-      </ul>
-    </div>
-    <div class="panel reveal">
-      <h3>Weekly review · sample</h3>
-      <div class="ticker">
-        <div><span>Plan followed</span><span class="up">▲ 92%</span></div>
-        <div><span>Avg. risk / trade</span><span>1.0%</span></div>
-        <div><span>Revenge trades</span><span class="up">0</span></div>
-        <div><span>Biggest lesson</span><span class="dn">Patience ▼ FOMO</span></div>
-      </div>
-      <p class="disc">Illustrative only. Nothing here is financial advice; trading involves risk of loss.</p>
-    </div>
-  </div>
-</div></section>
+<template id="p-vibe" data-c="#fde38a">
+<span class="k">04 · Beyond teaching</span><h2>Vibe coding.</h2>
+<p class="lead">When a tool I need does not exist, I describe it, build it with AI, and refine it until it works.</p>
+<div class="tagrow"><span>Websites</span><span>Tools for teaching</span><span>Trading helpers</span></div>
+<p>Everything in the Projects folder was made this way. More details coming soon.</p>
+<div class="btns"><a class="btn p" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">See it on GitHub ↗</a></div>
+</template>
 
-<section id="build" data-mode="build"><div class="wrap">
-  <p class="tag reveal">// 03 — the creator</p>
-  <h2 class="reveal">Things I've made.</h2>
-  <p class="sub reveal">Tools for my classroom, my charts and my community.</p>
-  <div class="repos" id="repos"></div>
-  <p class="more"><a class="btn" id="ghlink" href="https://github.com/" target="_blank" rel="noopener">View all on GitHub →</a></p>
-</div></section>
+<template id="p-projects" data-c="#ef95b0" data-wide="1">
+<span class="k">★ · Projects</span><h2>Things I have built.</h2>
+<p>When a tool I need does not exist, I make it. Pick any card to open the project.</p>
+<div class="pgrid">
+<article class="pcard" style="--cc:#fde38a"><div class="pt"><b>2<i class="r">♥</i></b><span>Free guide</span></div><h4>Learn Islam 101</h4><p>A guide to wudu, prayer, short surahs, duas and zikir for new and returning Muslims, in English and Malay.</p><div class="tagrow"><span>TypeScript</span><span>Live</span></div><div class="btns"><a class="btn p" href="https://fatinfaziana.github.io/Learn-Islam-101/" target="_blank" rel="noopener">Open ↗</a><a class="btn" href="https://github.com/fatinfaziana/Learn-Islam-101" target="_blank" rel="noopener">Source ↗</a></div></article>
+<article class="pcard" style="--cc:#cfc2ea"><div class="pt"><b>3<i>♠</i></b><span>Marking helper</span></div><h4>mark4you</h4><p>A marking helper for IGCSE teachers, with AI-assisted routes that keep the API key safely on the server.</p><div class="tagrow"><span>TypeScript</span><span>In development</span></div><div class="btns"><a class="btn" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">GitHub ↗</a></div></article>
+<article class="pcard" style="--cc:#f8c4a4"><div class="pt"><b>4<i class="r">♦</i></b><span>Chart desk</span></div><h4>Trade 4 you</h4><p>A chart-analysis desk for crypto, forex, gold and stocks: rule-based BUY / SELL / WAIT checklists, news warnings, alerts and a backtester.</p><div class="tagrow"><span>Node.js</span><span>Mac app</span></div><p class="note">Decision support only, not financial advice.</p><div class="btns"><a class="btn" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">GitHub ↗</a></div></article>
+<article class="pcard" style="--cc:#ef95b0"><div class="pt"><b>5<i>♣</i></b><span>Tuition site</span></div><h4>Asterisk Academy</h4><p>The website for my IGCSE tuition: an availability calendar, package selection and an instant invoice for parents.</p><div class="tagrow"><span>Web</span><span>Live</span></div><div class="btns"><a class="btn p" href="https://my-first-project-y3iv.vercel.app/" target="_blank" rel="noopener">Open ↗</a></div></article>
+<article class="pcard" style="--cc:#fffaf5"><div class="pt"><b>6<i class="r">♥</i></b><span>All my code</span></div><h4>GitHub</h4><p>Every project, in one place.</p><div class="btns"><a class="btn p" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">Visit profile ↗</a></div></article>
+</div>
+</template>
 
-<section id="contact" class="contact" data-mode="teach"><div class="wrap">
-  <p class="tag reveal">// say hello</p>
-  <h2 class="reveal">Let's <em>learn</em>, <em>trade</em> or <em>build</em> something.</h2>
-  <p class="sub reveal" style="margin:0 auto">Tuition enquiries (trial class RM 30), collaborations, or just a chat about markets and code.</p>
-  <div class="links reveal">
-    <a class="btn p" href="mailto:fatinfazianalearn@gmail.com">Email me</a>
-    <a class="btn" id="ghlink2" href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
-  </div>
-</div></section>
+<template id="p-beyond" data-c="#f8c4a4" data-wide="1">
+<span class="k">J♣ · Beyond teaching</span><h2>Two more hands I play.</h2>
+<p>Outside the classroom I trade with a plan and build tools with AI.</p>
+<div class="pgrid two">
+<article class="pcard" style="--cc:#cfc2ea"><div class="pt"><b>2<i class="r">♦</i></b><span>Trading</span></div><h4>Trading</h4><p>I treat trading like exam prep: study it, practise it, review it.</p><ul class="list"><li><b>Risk first.</b> Know the loss before entering.</li><li><b>Trade the plan.</b> Defined setups and exits.</li><li><b>Journal everything.</b> Review every week.</li><li><b>Keep learning.</b> Markets change.</li></ul><p class="note">A personal approach, not financial advice. Trading involves risk of loss.</p></article>
+<article class="pcard" style="--cc:#fde38a"><div class="pt"><b>3<i>♣</i></b><span>Vibe coding</span></div><h4>Vibe coding</h4><p>When a tool I need does not exist, I describe it, build it with AI, and refine it until it works.</p><div class="tagrow"><span>Websites</span><span>Teaching tools</span><span>Trading helpers</span></div><p>More details coming soon.</p><div class="btns"><a class="btn p" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">See it on GitHub ↗</a></div></article>
+</div>
+</template>
 
-<footer>© <span id="yr"></span> Fatin Faziana · Teach. Trade. Build.</footer>
-
-<script>
-/* ===== EDIT ME ===== */
-const PROJECTS = [
-  {name:"Learn-Islam-101", desc:"Free guide to wudu, prayer, short surahs, duas and zikir for new and returning Muslims (English and Malay).", lang:"TypeScript", url:"https://fatinfaziana.github.io/Learn-Islam-101/"},
-  {name:"asterisk-academy", desc:"My IGCSE tuition centre's website: parent-facing booking calendar, packages, instant invoice and Google Sheets order tracking.", lang:"Web + AI agents"},
-  {name:"mark4you", desc:"A marking helper for IGCSE teachers, with AI-assisted routes that keep the API key safely on the server.", lang:"TypeScript"},
-  {name:"tradedesk", desc:"A chart-analysis desk for crypto, forex, gold and stocks: rule-based BUY / SELL / WAIT checklists, news warnings, alerts and a backtester.", lang:"Node.js · Mac app"}
-];
-/* =================== */
-
-document.getElementById('yr').textContent = new Date().getFullYear();
-
-// scroll reveal + accent mode follows the section in view
-const io = new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.15});
-document.addEventListener('DOMContentLoaded',()=>document.querySelectorAll('.reveal').forEach(el=>io.observe(el)));
-const mo = new IntersectionObserver(es=>es.forEach(e=>{
-  if(e.isIntersecting) document.body.dataset.mode = e.target.dataset.mode;
-}),{rootMargin:'-45% 0px -50% 0px'});
-document.querySelectorAll('[data-mode]').forEach(s=>s!==document.body&&mo.observe(s));
-
-// projects
-const esc = s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-document.getElementById('repos').innerHTML = PROJECTS.map(r=>{
-  const tag = r.url ? 'a href="'+esc(r.url)+'" target="_blank" rel="noopener"' : 'div';
-  return `<${tag} class="repo reveal in">
-    <div class="bar"><i></i><i></i><i></i></div>
-    <div class="body"><div class="n">${esc(r.name)}</div><p>${esc(r.desc)}</p>
-    <div class="meta"><span>● ${esc(r.lang)}</span>${r.url?'<span>↗ live</span>':'<span>private</span>'}</div></div>
-  </${r.url?'a':'div'}>`;}).join('');
-const url='https://github.com/fatinfaziana'; ghlink.href=ghlink2.href=url;
-
-// hero candlestick background
-(function(){
-  const c = document.getElementById('chart'), x = c.getContext('2d');
-  let W,H,candles=[],dpr=Math.min(devicePixelRatio||1,2);
-  function seed(){
-    candles=[];let p=H*.55;const n=Math.ceil(W/22)+2;
-    for(let i=0;i<n;i++){const o=p,cl=o+(Math.random()-.5)*60-4;p=cl*.9+H*.55*.1;
-      candles.push({o,c:cl,h:Math.min(o,cl)-Math.random()*30,l:Math.max(o,cl)+Math.random()*30});}
-  }
-  function size(){W=c.clientWidth;H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);seed();draw()}
-  function draw(){
-    x.clearRect(0,0,W,H);
-    candles.forEach((k,i)=>{const px=i*22+8,up=k.c<k.o;x.strokeStyle=x.fillStyle=up?'#3ddc97':'#ff6b6b';
-      x.beginPath();x.moveTo(px+5,k.h);x.lineTo(px+5,k.l);x.stroke();
-      x.fillRect(px,Math.min(k.o,k.c),10,Math.max(2,Math.abs(k.o-k.c)));});
-  }
-  function tick(){candles.shift();const l=candles[candles.length-1],o=l.c,cl=o+(Math.random()-.5)*60-4;
-    const cc=Math.max(H*.2,Math.min(H*.8,cl));
-    candles.push({o,c:cc,h:Math.min(o,cc)-Math.random()*30,l:Math.max(o,cc)+Math.random()*30});draw()}
-  addEventListener('resize',size);size();
-  if(!matchMedia('(prefers-reduced-motion:reduce)').matches)setInterval(tick,700);
-})();
-</script>
+<script type="module" src="assets/app.js?v=38"></script>
 </body>
 </html>
