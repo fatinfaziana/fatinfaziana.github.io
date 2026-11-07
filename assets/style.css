@@ -262,3 +262,24 @@ body{background:#f7efe4;color:var(--ink)}
 .pl-s{width:32px;height:32px;border-radius:50%;border:0;background:transparent;color:#85766d;cursor:pointer;display:grid;place-items:center}.pl-s:hover{background:rgba(232,163,160,.25);color:#4a3b35}
 #player.xs .pl-s{display:none}#player.xs .pl-m span{display:none}
 #player.sm .pl-s{width:28px;height:28px}
+
+/* ---- music card ---- */
+#player{flex-direction:column;align-items:stretch;gap:9px;padding:12px 16px 10px;position:fixed}
+#player .pl-art,#player .pl-m{display:none}
+.pl-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.pl-tt{min-width:0}.pl-tt small{display:block;font:700 9.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#9a7a64}
+.pl-tt b{display:block;font:700 17px/1.2 var(--serif);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.pl-heart{border:0;background:none;color:#4a3b35;cursor:pointer;padding:2px;display:grid;place-items:center;flex:none}.pl-heart:hover{color:#d97b74}
+.pl-heart.on{color:#d97b74}.pl-heart.on svg{fill:#d97b74}
+#player .pl-bar{position:relative;height:2px;border-radius:2px;background:#4a3b35;margin:6px 0 4px;overflow:visible}
+#player .pl-bar i{position:relative;display:block;height:100%;width:0;background:#4a3b35;transition:width .3s linear;overflow:visible}
+#player .pl-bar i::after{content:"";position:absolute;right:-5px;top:-4px;width:10px;height:10px;border-radius:50%;background:#4a3b35}
+#player .pl-c{display:flex;align-items:center;justify-content:space-between;gap:4px}
+#player .pl-s{width:34px;height:34px;border-radius:8px;color:#4a3b35;background:none}#player .pl-s:hover{background:rgba(74,59,53,.1)}
+#player .pl-s.on{color:#d97b74;background:rgba(217,123,116,.15)}
+#player .pl-b{width:44px;height:44px;background:#4a3b35;box-shadow:0 4px 12px rgba(74,59,53,.35)}#player .pl-b:hover{background:#2f2420}
+#plist{position:absolute;left:0;right:0;bottom:calc(100% + 8px);padding:6px;border-radius:14px;background:rgba(255,252,248,.97);border:1px solid #fff;box-shadow:0 12px 30px rgba(120,90,70,.25);display:none}
+#plist.on{display:block}#plist button{display:block;width:100%;text-align:left;background:none;border:0;padding:8px 12px;border-radius:9px;font:600 13px var(--sans);color:var(--ink);cursor:pointer}
+#plist button:hover{background:#f7d5d0}#plist button.cur{background:#d4dfc6}
+#player.sm .pl-list,#player.sm .pl-rep{display:none}#player.sm .pl-c{justify-content:center;gap:10px}
+#player.xs .pl-s{display:none}#player.xs .pl-tt small{display:none}

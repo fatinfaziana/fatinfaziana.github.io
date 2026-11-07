@@ -7,7 +7,7 @@ A one-page personal portfolio styled as a soft cream, blush and sage MacBook des
 ## What's on the desktop
 - **Folders (left):** About myself, Experience, Contributions, Beyond teaching, Projects, Achievements. Hover a folder to peek at what's inside; click to open its information window.
 - **Shah Alam map card:** shows the Shah Alam, Selangor base and links to Google Maps.
-- **Music player:** four soft, original Ghibli-style background songs generated in the browser, with previous, play/pause and next buttons. The dock icon also plays and pauses.
+- **Music player:** four soft, original Ghibli-style background songs generated in the browser, in a music-card player with the song title, a favourite heart, a progress line, a song list, previous, play/pause, next and repeat. The dock icon also plays and pauses.
 - **About card:** a written introduction to Fatin Faziana.
 - **Photo (right):** a cut-out portrait that blends into the desktop, with daisies falling on the back layer.
 - **Dock:** quick links to About, Projects, Mail, Asterisk Academy, music, the Shah Alam map and GitHub.

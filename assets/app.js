@@ -45,7 +45,7 @@ const TRACKS=[
   mel:[[[0,74,3],[3,77,1],[4,81,4]],[[0,79,2],[2,77,2],[4,74,4]],[[0,72,2],[2,77,2],[4,81,2],[6,84,2]],[[0,79,4],[4,76,4]],[[0,77,2],[2,81,2],[4,86,2],[6,84,2]],[[0,82,2],[2,79,2],[4,77,4]],[[0,81,2],[2,77,2],[4,72,2],[6,77,2]],[[0,76,3],[3,72,1],[4,74,4]]]}];
 TRACKS.forEach(t=>t.len=8*t.spb*60/t.bpm/2);
 const music=(()=>{
-  let ctx,bus,timer,step=0,next=0,on=false,level=.3,t0=0,idx=0,loops=0;const subs=[];
+  let ctx,bus,timer,step=0,next=0,on=false,level=.3,t0=0,idx=0,loops=0,rep=false;const subs=[];
   const pref=()=>localStorage.getItem('fz-music')!=='0';
   function chain(){
     if(bus)return;bus=ctx.createGain();bus.gain.value=0;
@@ -62,7 +62,7 @@ const music=(()=>{
     const ai=S.arp.indexOf(k);if(ai>=0)piano(t,ch[(ai+1)%3],1.4,.03);
     S.mel[bar].forEach(([ms,m,len])=>{if(ms===k)piano(t,m,len*sd+.9,.05)})}
   function pump(){const S=TRACKS[idx],sd=60/S.bpm/2,total=8*S.spb;
-    while(next<ctx.currentTime+.4){play(step,next);next+=sd;step++;if(step>=total){step=0;loops++;if(loops>=2){loops=0;idx=(idx+1)%TRACKS.length;t0=performance.now();fire()}}}}
+    while(next<ctx.currentTime+.4){play(step,next);next+=sd;step++;if(step>=total){step=0;loops++;if(loops>=2){loops=0;if(!rep)idx=(idx+1)%TRACKS.length;t0=performance.now();fire()}}}}
   function begin(){if(!(ctx=snd.ctx()))return;chain();clearInterval(timer);on=true;step=0;loops=0;next=ctx.currentTime+.1;t0=performance.now();
     bus.gain.cancelScheduledValues(ctx.currentTime);bus.gain.setValueAtTime(bus.gain.value,ctx.currentTime);bus.gain.linearRampToValueAtTime(level,ctx.currentTime+3);timer=setInterval(pump,60);pump();fire()}
   function stop(){if(!ctx)return;clearInterval(timer);timer=null;on=false;bus.gain.cancelScheduledValues(ctx.currentTime);bus.gain.setValueAtTime(bus.gain.value,ctx.currentTime);bus.gain.linearRampToValueAtTime(0,ctx.currentTime+.7);fire()}
@@ -70,20 +70,37 @@ const music=(()=>{
   function go(d){idx=(idx+d+TRACKS.length)%TRACKS.length;step=0;loops=0;t0=performance.now();if(on&&ctx)next=ctx.currentTime+.15;fire()}
   document.addEventListener('visibilitychange',()=>{if(!ctx)return;document.hidden?ctx.suspend():ctx.resume()});
   let gesture=false;
-  return{get on(){return on},get idx(){return idx},sub:f=>subs.push(f),pos:()=>on?((performance.now()-t0)/1000)%TRACKS[idx].len:0,len:()=>TRACKS[idx].len,
+  return{get on(){return on},get idx(){return idx},get rep(){return rep},setRep(v){rep=v},select(i){gesture=true;go(i-idx);if(!on){begin();localStorage.setItem('fz-music','1')}},sub:f=>subs.push(f),pos:()=>on?((performance.now()-t0)/1000)%TRACKS[idx].len:0,len:()=>TRACKS[idx].len,
     toggle(){gesture=true;if(on){stop();localStorage.setItem('fz-music','0')}else{begin();localStorage.setItem('fz-music','1')}},
     next(){gesture=true;go(1);if(!on){begin();localStorage.setItem('fz-music','1')}},prev(){gesture=true;go(-1);if(!on){begin();localStorage.setItem('fz-music','1')}},
     firstGesture(){if(gesture)return;gesture=true;if(pref())begin()}}})();
 document.addEventListener('pointerdown',()=>music.firstGesture(),{capture:true,once:true});
-/* player: previous, play or pause, next */
+/* player, in the style of a music-app card: title above, progress line, then the controls */
 const player=document.createElement('div');player.id='player';
-const ic=d=>`<svg viewBox="0 0 24 24" width="20" height="20">${d}</svg>`;
-player.innerHTML=`<div class="pl-art"><svg viewBox="0 0 32 32" width="26" height="26"><path d="M12 24V9l12-3v15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="24" r="3" fill="#fff"/><circle cx="21.5" cy="21" r="3" fill="#fff"/></svg></div><div class="pl-m"><b id="pl-t">Soft Morning</b><span>Ghibli-style · instrumental</span><div class="pl-bar"><i></i></div></div><div class="pl-c"><button class="pl-s pl-prev" aria-label="Previous song">${ic('<path d="M7 5v14M19 5L9 12l10 7z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>')}</button><button class="pl-b" aria-label="Play or pause"></button><button class="pl-s pl-next" aria-label="Next song">${ic('<path d="M17 5v14M5 5l10 7-10 7z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>')}</button></div>`;
+const ic=(d,w=20)=>`<svg viewBox="0 0 24 24" width="${w}" height="${w}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const HEART='<path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.600-7 10-7 10z"/>';
+player.innerHTML=`<div class="pl-top"><div class="pl-tt"><small>Studio Ghibli · Theme</small><b id="pl-t">Soft Morning</b></div><button class="pl-heart" aria-label="Add to favourites">${ic(HEART,20)}</button></div>
+<div class="pl-bar"><i></i></div>
+<div class="pl-c"><button class="pl-s pl-list" aria-label="Choose a song">${ic('<path d="M4 6h10M4 11h10M4 16h6"/><path d="M18 18V7l3 1" /><circle cx="16.200" cy="18" r="1.800" fill="currentColor"/>',22)}</button>
+<button class="pl-s pl-prev" aria-label="Previous song">${ic('<path d="M7 5v14" stroke-width="2.6"/><path d="M19 5L9 12l10 7z" fill="currentColor"/>',22)}</button>
+<button class="pl-b" aria-label="Play or pause"></button>
+<button class="pl-s pl-next" aria-label="Next song">${ic('<path d="M17 5v14" stroke-width="2.6"/><path d="M5 5l10 7-10 7z" fill="currentColor"/>',22)}</button>
+<button class="pl-s pl-rep" aria-label="Repeat this song">${ic('<path d="M17 2l3 3-3 3"/><path d="M4 11V9a4 4 0 014-4h12"/><path d="M7 22l-3-3 3-3"/><path d="M20 13v2a4 4 0 01-4 4H4"/>',22)}</button></div>
+<div id="plist"></div>`;
 document.body.append(player);
-const plB=player.querySelector('.pl-b'),plI=player.querySelector('.pl-bar i'),plT=player.querySelector('#pl-t');
-const plUp=(on,i)=>{plB.innerHTML=on?'<svg viewBox="0 0 24 24" width="22" height="22"><rect x="6" y="5" width="4" height="14" rx="1.5" fill="#fff"/><rect x="14" y="5" width="4" height="14" rx="1.5" fill="#fff"/></svg>':'<svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5l11 7-11 7z" fill="#fff"/></svg>';plT.textContent=TRACKS[music.idx].name;document.body.classList.toggle('mus-on',on)};
-music.sub(plUp);plUp(false);plB.onclick=()=>music.toggle();player.querySelector('.pl-prev').onclick=()=>music.prev();player.querySelector('.pl-next').onclick=()=>music.next();
-setInterval(()=>{plI.style.width=(music.pos()/music.len()*100)+'%'},400);
+const plB=player.querySelector('.pl-b'),plI=player.querySelector('.pl-bar i'),plT=player.querySelector('#pl-t'),plH=player.querySelector('.pl-heart'),plL=player.querySelector('#plist');
+const favs=()=>{try{return JSON.parse(localStorage.getItem('fz-fav')||'[]')}catch(e){return[]}};
+const plUp=(on)=>{plB.innerHTML=on?'<svg viewBox="0 0 24 24" width="22" height="22"><rect x="6" y="5" width="4" height="14" rx="1.5" fill="#fff"/><rect x="14" y="5" width="4" height="14" rx="1.5" fill="#fff"/></svg>':'<svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5l11 7-11 7z" fill="#fff"/></svg>';
+  plT.textContent=TRACKS[music.idx].name;plH.classList.toggle('on',favs().includes(music.idx));document.body.classList.toggle('mus-on',on);
+  plL.innerHTML=TRACKS.map((t,i)=>`<button data-i="${i}" class="${i===music.idx?'cur':''}">${t.name}</button>`).join('');
+  plL.querySelectorAll('button').forEach(b=>b.onclick=()=>{music.select(+b.dataset.i);plL.classList.remove('on')})};
+music.sub(plUp);plUp(false);plB.onclick=()=>music.toggle();
+player.querySelector('.pl-prev').onclick=()=>music.prev();player.querySelector('.pl-next').onclick=()=>music.next();
+player.querySelector('.pl-list').onclick=e=>{e.stopPropagation();plL.classList.toggle('on')};
+player.querySelector('.pl-rep').onclick=e=>{music.setRep(!music.rep);e.currentTarget.classList.toggle('on',music.rep)};
+plH.onclick=()=>{const f=favs(),i=music.idx,k=f.indexOf(i);k>=0?f.splice(k,1):f.push(i);try{localStorage.setItem('fz-fav',JSON.stringify(f))}catch(e){}plH.classList.toggle('on',k<0)};
+document.addEventListener('click',e=>{if(!e.target.closest('#player'))plL.classList.remove('on')});
+setInterval(()=>{plI.style.width=(music.pos()/music.len()*100)+'%'},300);
 
 /* ---------- the desktop: folders inside folders ---------- */
 const DOC=(n,panel,ext='pages')=>({n,t:'doc',panel,ext});
@@ -296,7 +313,7 @@ function layoutGL(){
     sc=clamp(Math.min(cw*.8,170)/(FW*ppu),.3,1.5);sc=Math.min(sc,gap*.82/(FH*ppu));
     cx=i=>leftX+cw*((i<3?0:1)+.5);cy=i=>top+gap*((i<3?i:i-3)+.5);
     cm.style.left=(leftX+cw*2+8)+'px';cm.style.top=(top+8)+'px';cm.style.width=(cw-8)+'px';cm.style.height=(gap*2-16)+'px';
-    pl.style.left=(leftX+cw*2+8)+'px';pl.style.top=(top+gap*2+8)+'px';pl.style.width=(cw-8)+'px';pl.style.height=(gap-16)+'px';pl.classList.toggle('sm',cw-8<270);pl.classList.toggle('xs',cw-8<200);
+    pl.style.left=(leftX+cw*2+8)+'px';pl.style.top=(top+gap*2+8)+'px';pl.style.width=(cw-8)+'px';pl.style.height='';pl.classList.toggle('sm',cw-8<250);pl.classList.toggle('xs',cw-8<165);
   }
   folders.forEach((f,i)=>{
     f.home.set((cx(i)-W/2)/ppu,(H/2-cy(i))/ppu,0);f.sc=sc;f.g.scale.setScalar(sc);f.half=FW*sc*ppu/2;
