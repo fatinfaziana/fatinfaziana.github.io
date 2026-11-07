@@ -78,27 +78,30 @@ setInterval(()=>{plI.style.width=(music.pos()/music.len*100)+'%'},400);
 const DOC=(n,panel,ext='pages')=>({n,t:'doc',panel,ext});
 const LINK=(n,href)=>({n,t:'link',href});
 const MILES=[
- {l:'2017',t:'Started teaching',d:'Began as a business lecturer for adult learners.'},
- {l:'2019',t:'Moved into IGCSE',d:'Started teaching Accounting and Business Studies, with Economics alongside.'},
- {l:'2022',t:'Leading and tutoring',d:'Became a Department Leader and began independent one-to-one tuition. Lecturing concluded after five years.'},
- {l:'Today',t:'Full focus on students and craft',d:'Department leadership completed. Today: tuition, trading and building projects.'}];
-const yearDoc=m=>({n:m.l==='Today'?'2025 – Today':m.l+' · '+m.t,t:'doc',ext:'txt',html:`<span class="k">02 · Experience</span><h2>${m.l}</h2><h3>${m.t}</h3><p>${m.d}</p>`});
+ {l:'2017',t:'Became a business lecturer',d:'Started my career teaching business to adult learners.'},
+ {l:'2019',t:'Started teaching IGCSE',d:'Began teaching IGCSE Accounting and Business Studies, with Economics alongside.'},
+ {l:'2022',t:'Appointed as HOD',d:'Appointed Head of Department and fully focused on IGCSE.'},
+ {l:'2023',t:'Started trading',d:'Began trading the markets with a plan: risk first, and a journal for everything.'},
+ {l:'Today',t:'Started vibe coding',d:'Teaching and tuition, trading and vibe coding, all side by side.'}];
+const yearDoc=m=>({n:m.l==='Today'?'2025 – Today':m.l+' · '+m.t,t:'doc',ext:'txt',html:`<span class="k">Experience</span><h2>${m.l}</h2><h3>${m.t}</h3><p>${m.d}</p>`});
 const PROJ=[
  {n:'Learn Islam 101',d:'A guide to wudu, prayer, short surahs, duas and zikir for new and returning Muslims, in English and Malay.',tags:['TypeScript','Live'],live:'https://fatinfaziana.github.io/Learn-Islam-101/',src:'https://github.com/fatinfaziana/Learn-Islam-101'},
  {n:'mark4you',d:'A marking helper for IGCSE teachers, with AI-assisted routes that keep the API key safely on the server.',tags:['TypeScript','In development'],src:'https://github.com/fatinfaziana'},
- {n:'Trade 4 you',d:'A chart-analysis desk for crypto, forex, gold and stocks: rule-based BUY / SELL / WAIT checklists, news warnings, alerts and a backtester.',tags:['Node.js','Mac app'],note:'Decision support only, not financial advice.',src:'https://github.com/fatinfaziana'},
+ {n:'TradeDesk',d:'A scanner and chart desk for crypto, forex, gold and stocks. It lists setups as BUY or SELL with a grade, shows entry, stop loss and take profit, flags news cautions, and links to charts and alerts.',tags:['Node.js','Mac app'],note:'Decision support only, not financial advice.',img:'assets/tradedesk.jpg',src:'https://github.com/fatinfaziana'},
  {n:'Asterisk Academy',d:'The website for my IGCSE tuition: an availability calendar, package selection and an instant invoice for parents.',tags:['Web','Live'],live:'https://my-first-project-y3iv.vercel.app/'},
 {n:'GitHub',d:'Every project, in one place.',tags:['All my code'],live:'https://github.com/fatinfaziana',liveName:'Visit profile'}];
-const projDoc=p=>({n:'README',t:'doc',ext:'md',html:`<span class="k">05 · Projects</span><h2>${p.n}</h2><p class="lead">${p.d}</p><div class="tagrow">${p.tags.map(x=>`<span>${x}</span>`).join('')}</div>${p.note?`<p class="note">${p.note}</p>`:''}<div class="btns">${p.live?`<a class="btn p" href="${p.live}" target="_blank" rel="noopener">${p.liveName||'Open live site'} ↗</a>`:''}${p.src?`<a class="btn" href="${p.src}" target="_blank" rel="noopener">Source code ↗</a>`:''}</div>`});
+const projDoc=p=>({n:'README',t:'doc',ext:'md',html:`<span class="k">Projects</span><h2>${p.n}</h2><p class="lead">${p.d}</p><div class="tagrow">${p.tags.map(x=>`<span>${x}</span>`).join('')}</div>${p.note?`<p class="note">${p.note}</p>`:''}<div class="btns">${p.live?`<a class="btn p" href="${p.live}" target="_blank" rel="noopener">${p.liveName||'Open live site'} ↗</a>`:''}${p.src?`<a class="btn" href="${p.src}" target="_blank" rel="noopener">Source code ↗</a>`:''}</div>`});
 const FS={n:'Fatin Faziana',t:'folder',kids:[
  {n:'About myself',t:'folder',kids:[DOC('Who I am','p-about'),DOC('Get in touch','p-contact')]},
- {n:'Experience',t:'folder',kids:[DOC('Timeline','p-exp','key'),{n:'Early years',t:'folder',kids:[yearDoc(MILES[0]),yearDoc(MILES[1])]},{n:'Leading years',t:'folder',kids:[yearDoc(MILES[2]),yearDoc(MILES[3])]}]},
+ {n:'Experience',t:'folder',kids:[DOC('Timeline','p-exp','key'),{n:'Early years',t:'folder',kids:[yearDoc(MILES[0]),yearDoc(MILES[1])]},{n:'Leading years',t:'folder',kids:MILES.slice(2).map(yearDoc)}]},
  {n:'Contributions',t:'folder',kids:[DOC('From struggling to A','p-impact'),DOC('How I do it','p-how'),DOC('Beyond the classroom','p-events')]},
  {n:'Beyond teaching',t:'folder',kids:[{n:'Trading',t:'folder',kids:[DOC('My rules','p-trading')]},{n:'Vibe coding',t:'folder',kids:[DOC('Overview','p-vibe')]}]},
  {n:'Projects',t:'folder',kids:PROJ.map(p=>({n:p.n,t:'folder',kids:[projDoc(p),...(p.live?[LINK(p.liveName||'Open live site',p.live)]:[]),...(p.src?[LINK('Source code',p.src)]:[])]}))}
+
+ ,{n:'Achievements',t:'folder',kids:[LINK('Dean\'s List awardee','#'),LINK('2nd place, Data Analytics','#')]}
 ]};
 (function link(n,p){n.parent=p;(n.kids||[]).forEach(k=>link(k,n))})(FS,null);
-const PAL=[{b:'#e8a3a0',f:'#f7d5d0'},{b:'#d8b98a',f:'#f0dfc2'},{b:'#a3b58f',f:'#d4dfc6'},{b:'#9db7c8',f:'#d0e0ea'},{b:'#c2abd0',f:'#e3d6ec'}];
+const PAL=[{b:'#e8a3a0',f:'#f7d5d0'},{b:'#d8b98a',f:'#f0dfc2'},{b:'#a3b58f',f:'#d4dfc6'},{b:'#9db7c8',f:'#d0e0ea'},{b:'#c2abd0',f:'#e3d6ec'},{b:'#d9a7b8',f:'#f1d4de'}];
 (function paint(n,p){n.pal=p;(n.kids||[]).forEach(k=>paint(k,p))})(FS,null);FS.kids.forEach((k,i)=>(function paint(n){n.pal=PAL[i];(n.kids||[]).forEach(paint)})(k));
 const pathOf=n=>{const a=[];for(;n;n=n.parent)a.unshift(n.n);return a};
 
@@ -162,7 +165,8 @@ function infoInto(inner,i){
   else if(i===1){inner.append(tplEl('p-exp'))}
   else if(i===2){add('p-impact');add('p-how');inner.append(tplEl('p-events'))}
   else if(i===3){add('p-trading');inner.append(tplEl('p-vibe'))}
-  else{inner.insertAdjacentHTML('beforeend',`<span class="k">05 · Projects</span><h2>Things I've built.</h2><div class="pgrid">${PROJ.map(p=>`<div class="pc"><h4>${p.n}</h4><div class="tagrow">${p.tags.map(x=>`<span>${x}</span>`).join('')}</div><p>${p.d}</p>${p.note?`<p class="note">${p.note}</p>`:''}<div class="btns">${p.live?`<a class="btn p" href="${p.live}" target="_blank" rel="noopener">${p.liveName||'Open live site'} ↗</a>`:''}${p.src?`<a class="btn" href="${p.src}" target="_blank" rel="noopener">Source code ↗</a>`:''}</div></div>`).join('')}</div>`)}
+  else if(i===4){inner.insertAdjacentHTML('beforeend',`<span class="k">Projects</span><h2>Things I've built.</h2><div class="pgrid">${PROJ.map(p=>`<div class="pc">${p.img?`<a href="${p.live||p.src}" target="_blank" rel="noopener"><img class="pimg" src="${p.img}" alt="${p.n} screenshot" loading="lazy"></a>`:''}<h4>${p.n}</h4><div class="tagrow">${p.tags.map(x=>`<span>${x}</span>`).join('')}</div><p>${p.d}</p>${p.note?`<p class="note">${p.note}</p>`:''}<div class="btns">${p.live?`<a class="btn p" href="${p.live}" target="_blank" rel="noopener">${p.liveName||'Open live site'} ↗</a>`:''}${p.src?`<a class="btn" href="${p.src}" target="_blank" rel="noopener">Source code ↗</a>`:''}</div></div>`).join('')}</div>`)}
+  if(i===5)inner.insertAdjacentHTML('beforeend',`<span class="k">Achievements</span><h2>Things I'm proud of.</h2><div class="pgrid"><div class="pc"><h4>Dean's List awardee</h4><div class="tagrow"><span>Academic</span></div><p>Recognised on the Dean's List for academic performance.</p></div><div class="pc"><h4>2nd place, Data Analytics</h4><div class="tagrow"><span>Competition</span></div><p>Won second place in a Data Analytics competition, building a solution that filters unwanted comments: spam, nudity and scam.</p></div></div>`);
   const last=inner.lastElementChild;if(last&&last.classList.contains('sep'))last.remove()}
 function openInfo(node){
   if(node===FS||!node)node=FS.kids[0];const i=FS.kids.indexOf(node);snd.click();
@@ -173,23 +177,38 @@ function openInfo(node){
   if(i===1){initJourney();el._onclose=stopJourney}
   return el}
 
-/* ---------- Experience: a horizontal journey, year by year ---------- */
-let jI=0,jT=null,jAuto=true;
-function jgo(i){
-  jI=clamp(i,0,MILES.length-1);const m=MILES[jI],pc=10+jI*(80/(MILES.length-1)),car=$('#jcar');if(!car)return;
-  car.style.left=pc+'%';$('#jfill').style.width=(pc-10)+'%';const road=$('#jroad');road.classList.add('moving');setTimeout(()=>road.classList.remove('moving'),1500);
-  document.querySelectorAll('#jroad .jpin').forEach((b,j)=>{b.classList.toggle('on',j===jI);b.classList.toggle('seen',j<jI)});
+/* ---------- Experience: a winding line that travels left to right, point to point ---------- */
+const JP=[[70,160],[285,64],[500,176],[715,64],[930,160]];
+let jI=0,jT=null,jAuto=true,jRaf=0,jLen=0,jL=[],jTot=0;
+function jgo(i,instant){
+  jI=clamp(i,0,MILES.length-1);const m=MILES[jI],svg=$('#jsvg');if(!svg)return;
+  const prog=svg.querySelector('.jprog'),mov=svg.querySelector('.jmov'),path=svg.querySelector('.jbase');
+  const from=jLen,to=jL[jI],t0=performance.now(),dur=instant?1:Math.max(700,Math.abs(to-from)*3.2);
+  cancelAnimationFrame(jRaf);
+  const step=now=>{const k=clamp((now-t0)/dur),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;jLen=from+(to-from)*e;
+    prog.style.strokeDashoffset=jTot-jLen;const pt=path.getPointAtLength(jLen);mov.setAttribute('cx',pt.x);mov.setAttribute('cy',pt.y);
+    svg.querySelectorAll('.jp').forEach((g,j)=>{g.classList.toggle('seen',jL[j]<=jLen+1);g.classList.toggle('on',j===jI&&k>.85)});
+    if(k<1)jRaf=requestAnimationFrame(step)};
+  jRaf=requestAnimationFrame(step);
   const c=$('#jcard');c.classList.remove('in');void c.offsetWidth;$('#jyr').textContent=m.l;$('#jt').textContent=m.t;$('#jd').textContent=m.d;c.classList.add('in');
-  $('#jprev').disabled=jI===0;$('#jnext').textContent=jI===MILES.length-1?'Back to the start ↺':'Next year ›';if(i>0)snd.tick();
+  $('#jprev').disabled=jI===0;$('#jnext').textContent=jI===MILES.length-1?'Back to start ↺':'Next ›';if(!instant&&i>0)snd.tick&&0;
 }
-function jplan(){clearTimeout(jT);if(!jAuto)return;jT=setTimeout(()=>{if(!$('#jy'))return;if(jI<MILES.length-1){jgo(jI+1);jplan()}},4800)}
+function jplan(){clearTimeout(jT);if(!jAuto)return;jT=setTimeout(()=>{if(!$('#jsvg'))return;if(jI<MILES.length-1){jgo(jI+1);jplan()}},5200)}
 function initJourney(){
-  jAuto=true;const r=$('#jroad');if(!r)return;
-  r.querySelectorAll('.jpin').forEach((b,j)=>b.onclick=()=>{jAuto=false;clearTimeout(jT);jgo(j)});
-  $('#jprev').onclick=()=>{jAuto=false;clearTimeout(jT);jgo(jI-1)};$('#jnext').onclick=()=>{jAuto=false;clearTimeout(jT);jgo(jI>=MILES.length-1?0:jI+1)};
-  $('#jcar').style.left='2%';setTimeout(()=>jgo(0),250);jplan();
+  jAuto=true;jI=0;jLen=0;const svg=$('#jsvg');if(!svg)return;
+  const n=JP.length;let d=`M10 ${JP[0][1]+10} C30 ${JP[0][1]+8} 50 ${JP[0][1]} ${JP[0][0]} ${JP[0][1]}`;
+  for(let i=0;i<n-1;i++){const p0=JP[i-1]||JP[i],p1=JP[i],p2=JP[i+1],p3=JP[i+2]||p2;
+    d+=` C${p1[0]+(p2[0]-p0[0])/6} ${p1[1]+(p2[1]-p0[1])/6} ${p2[0]-(p3[0]-p1[0])/6} ${p2[1]-(p3[1]-p1[1])/6} ${p2[0]} ${p2[1]}`}
+  d+=` C${JP[n-1][0]+20} ${JP[n-1][1]-4} 975 ${JP[n-1][1]-14} 990 ${JP[n-1][1]-30}`;
+  svg.innerHTML=`<path class="jbase" d="${d}"/><path class="jprog" d="${d}"/>`+JP.slice(0,MILES.length).map((p,j)=>`<g class="jp" data-j="${j}" tabindex="0" role="button" aria-label="${MILES[j].l}: ${MILES[j].t}"><circle class="jhit" cx="${p[0]}" cy="${p[1]}" r="30"/><circle class="jdot" cx="${p[0]}" cy="${p[1]}" r="10"/><text x="${p[0]}" y="${p[1]+(p[1]<110?-24:42)}" text-anchor="middle">${MILES[j].l}</text></g>`).join('')+`<circle class="jmov" r="9" cx="10" cy="${JP[0][1]+10}"/>`;
+  const path=svg.querySelector('.jbase');jTot=path.getTotalLength();svg.querySelector('.jprog').style.strokeDasharray=jTot;svg.querySelector('.jprog').style.strokeDashoffset=jTot;
+  jL=JP.map(p=>{let best=0,bd=1e9;for(let l=0;l<=jTot;l+=3){const q=path.getPointAtLength(l),dd=(q.x-p[0])**2+(q.y-p[1])**2;if(dd<bd){bd=dd;best=l}}return best});
+  const stop=()=>{jAuto=false;clearTimeout(jT)};
+  svg.querySelectorAll('.jp').forEach(g=>{const go=()=>{stop();jgo(+g.dataset.j)};g.onclick=go;g.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')go()}});
+  $('#jprev').onclick=()=>{stop();jgo(jI-1)};$('#jnext').onclick=()=>{stop();jgo(jI>=MILES.length-1?0:jI+1)};
+  setTimeout(()=>jgo(0),300);jplan();
 }
-function stopJourney(){clearTimeout(jT);jAuto=false}
+function stopJourney(){clearTimeout(jT);jAuto=false;cancelAnimationFrame(jRaf)}
 
 /* ---------- menu bar, dock ---------- */
 function clock(){const d=new Date();const ct=$('#cwt');if(ct){ct.textContent=d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});$('#cwd').textContent=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}$('#clock').textContent=new Date().toLocaleString('en-GB',{weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}).replace(',','')}
@@ -220,7 +239,7 @@ let renderer,scene,camera,wall,wallMat,folders=[],raycaster,hoverF=null,GL=false
 const mouse=new THREE.Vector2(9,9);let px=0,py=0;
 const vis=z=>{const h=2*(CAMZ-z)*Math.tan(THREE.MathUtils.degToRad(FOV/2));return{h,w:h*camera.aspect}};
 function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t}
-const SUB=['2 pages','4 milestones','3 pages','2 topics','5 projects'];
+const SUB=['2 pages','5 milestones','3 pages','2 topics','5 projects','2 awards'];
 const mix=(a,b,t)=>'#'+[1,3,5].map(k=>Math.round(parseInt(a.substr(k,2),16)*(1-t)+parseInt(b.substr(k,2),16)*t).toString(16).padStart(2,'0')).join('');
 function makeFolder(node,i){
   const g=new THREE.Group(),m=(c,r=.6)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:.02}),P=node.pal;
@@ -265,7 +284,7 @@ function layoutGL(){
     sc=clamp(Math.min(cw*.8,170)/(FW*ppu),.3,1.5);sc=Math.min(sc,gap*.82/(FH*ppu));
     cx=i=>leftX+cw*((i<3?0:1)+.5);cy=i=>top+gap*((i<3?i:i-3)+.5);
     cm.style.left=(leftX+cw*2+8)+'px';cm.style.top=(top+8)+'px';cm.style.width=(cw-8)+'px';cm.style.height=(gap*2-16)+'px';
-    pl.style.left=(leftX+cw+8)+'px';pl.style.top=(top+gap*2+8)+'px';pl.style.width=(cw*2-8)+'px';pl.style.height=(gap-16)+'px';
+    pl.style.left=(leftX+cw*2+8)+'px';pl.style.top=(top+gap*2+8)+'px';pl.style.width=(cw-8)+'px';pl.style.height=(gap-16)+'px';pl.classList.toggle('sm',cw-8<270);pl.classList.toggle('xs',cw-8<200);
   }
   folders.forEach((f,i)=>{
     f.home.set((cx(i)-W/2)/ppu,(H/2-cy(i))/ppu,0);f.sc=sc;f.g.scale.setScalar(sc);f.half=FW*sc*ppu/2;
@@ -317,9 +336,10 @@ let peekF=null;
 const blurb=(id,sel,n=110)=>{const e=document.getElementById(id).content.querySelector(sel);const t=(e?e.textContent:'').trim();return t.length>n?t.slice(0,n-1).trim()+'…':t};
 function peekHTML(i){
   if(i===0)return `<div class="pv about">${PASS}<div><b>Hi, I'm Fatin.</b><p>${blurb('p-about','.lead',130)}</p></div></div>`;
-  if(i===1)return `<div class="pv"><b>The journey, year by year</b><div class="pj">${MILES.map(m=>`<div><i></i><em>${m.l}</em><span>${m.t}</span></div>`).join('')}</div></div>`;
+  if(i===1)return `<div class="pv"><b>The journey, year by year</b><div class="pj" style="--n:${MILES.length}">${MILES.map(m=>`<div><i></i><em>${m.l}</em><span>${m.t}</span></div>`).join('')}</div></div>`;
   if(i===2)return `<div class="pv"><b>From struggling to A</b><p class="pq">“${blurb('p-impact','.quote',90)}”</p><div class="ps"><div><em>50% A</em><span>in my department's results</span></div><div><em>6+ yrs</em><span>IGCSE results work</span></div></div></div>`;
   if(i===3)return `<div class="pv"><div class="p2"><div><b>Trading</b><p>${blurb('p-trading','.lead',80)}</p></div><div><b>Vibe coding</b><p>${blurb('p-vibe','.lead',80)}</p></div></div></div>`;
+  if(i===5)return `<div class="pv"><b>Achievements</b><div class="p2"><div><b>Dean's List</b><p>Academic awardee</p></div><div><b>2nd place</b><p>Data Analytics: filtering spam, nudity and scam comments</p></div></div></div>`;
   return `<div class="pv"><b>Things I've built</b><div class="pt5">${PROJ.map(p=>`<div><strong>${p.n}</strong><span>${p.tags[p.tags.length-1]}</span></div>`).join('')}</div></div>`}
 function peekUpdate(){
   const el=$('#peek');if(!el)return;const f=mobile()?null:hoverF;
