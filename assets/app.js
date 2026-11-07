@@ -32,12 +32,20 @@ document.addEventListener('pointerdown',e=>{snd.unlock();if(e.target.closest('bu
 $('#snd').onclick=()=>{const o=snd.toggle();$('#snd').textContent=o?'Sound on':'Sound off';if(o)snd.click()};
 
 
-/* ---------- soft background music: an original Ghibli-style waltz, played by the browser ---------- */
+/* ---------- soft background music: original Ghibli-style pieces, played by the browser ---------- */
 const midi=m=>440*Math.pow(2,(m-69)/12);
-const SONG={bpm:78,chords:[[45,[57,60,64]],[41,[53,57,60]],[48,[55,60,64]],[43,[55,59,62]],[45,[57,60,64]],[41,[53,57,60]],[43,[55,59,62]],[48,[55,60,64]]],
- mel:[[[0,76,3],[3,72,1],[4,74,2]],[[0,72,2],[2,69,2],[4,72,2]],[[0,76,3],[3,79,1],[4,76,2]],[[0,74,3],[3,71,1],[4,67,2]],[[0,72,2],[2,76,2],[4,81,2]],[[0,79,3],[3,77,1],[4,76,2]],[[0,74,2],[2,71,2],[4,74,2]],[[0,72,6]]]};
+const TRACKS=[
+ {name:'Soft Morning',bpm:78,spb:6,arp:[2,4],chords:[[45,[57,60,64]],[41,[53,57,60]],[48,[55,60,64]],[43,[55,59,62]],[45,[57,60,64]],[41,[53,57,60]],[43,[55,59,62]],[48,[55,60,64]]],
+  mel:[[[0,76,3],[3,72,1],[4,74,2]],[[0,72,2],[2,69,2],[4,72,2]],[[0,76,3],[3,79,1],[4,76,2]],[[0,74,3],[3,71,1],[4,67,2]],[[0,72,2],[2,76,2],[4,81,2]],[[0,79,3],[3,77,1],[4,76,2]],[[0,74,2],[2,71,2],[4,74,2]],[[0,72,6]]]},
+ {name:'Windy Hill',bpm:88,spb:8,arp:[2,4,6],chords:[[48,[55,60,64]],[43,[55,59,62]],[45,[57,60,64]],[41,[53,57,60]],[48,[55,60,64]],[43,[55,59,62]],[45,[57,60,64]],[41,[53,57,60]]],
+  mel:[[[0,79,2],[2,76,2],[4,72,2],[6,76,2]],[[0,74,2],[2,79,2],[4,71,2],[6,74,2]],[[0,72,3],[3,76,1],[4,81,2],[6,79,2]],[[0,77,2],[2,72,2],[4,77,4]],[[0,76,2],[2,79,2],[4,84,2],[6,79,2]],[[0,79,2],[2,74,2],[4,71,2],[6,67,2]],[[0,72,2],[2,76,2],[4,81,2],[6,76,2]],[[0,77,2],[2,76,2],[4,72,4]]]},
+ {name:'Evening Tea',bpm:66,spb:6,arp:[2,4],chords:[[41,[57,60,65]],[38,[57,62,65]],[46,[58,62,65]],[48,[55,60,64]],[41,[57,60,65]],[38,[57,62,65]],[46,[58,62,65]],[41,[57,60,65]]],
+  mel:[[[0,72,3],[3,77,1],[4,76,2]],[[0,74,2],[2,77,2],[4,81,2]],[[0,79,3],[3,77,1],[4,74,2]],[[0,72,2],[2,76,2],[4,79,2]],[[0,77,3],[3,81,1],[4,79,2]],[[0,77,2],[2,74,2],[4,69,2]],[[0,70,2],[2,74,2],[4,77,2]],[[0,72,6]]]},
+ {name:'Starlit Walk',bpm:72,spb:8,arp:[2,4,6],chords:[[38,[57,62,65]],[46,[58,62,65]],[41,[57,60,65]],[48,[55,60,64]],[38,[57,62,65]],[46,[58,62,65]],[41,[57,60,65]],[48,[55,60,64]]],
+  mel:[[[0,74,3],[3,77,1],[4,81,4]],[[0,79,2],[2,77,2],[4,74,4]],[[0,72,2],[2,77,2],[4,81,2],[6,84,2]],[[0,79,4],[4,76,4]],[[0,77,2],[2,81,2],[4,86,2],[6,84,2]],[[0,82,2],[2,79,2],[4,77,4]],[[0,81,2],[2,77,2],[4,72,2],[6,77,2]],[[0,76,3],[3,72,1],[4,74,4]]]}];
+TRACKS.forEach(t=>t.len=8*t.spb*60/t.bpm/2);
 const music=(()=>{
-  let ctx,bus,timer,step=0,next=0,on=false,level=.3,t0=0;const subs=[];
+  let ctx,bus,timer,step=0,next=0,on=false,level=.3,t0=0,idx=0,loops=0;const subs=[];
   const pref=()=>localStorage.getItem('fz-music')!=='0';
   function chain(){
     if(bus)return;bus=ctx.createGain();bus.gain.value=0;
@@ -49,39 +57,43 @@ const music=(()=>{
   const osc=(t,type,f,d,v,a=.01)=>{const o=ctx.createOscillator();o.type=type;o.frequency.value=f;o.connect(env(t,d,v,a));o.start(t);o.stop(t+d+.05)};
   const piano=(t,m,d,v)=>{const f=midi(m);osc(t,'sine',f,d,v,.006);osc(t,'sine',f*2,d*.5,v*.3,.004);osc(t,'triangle',f*3,d*.25,v*.08,.003)};
   function play(st,t){
-    const bar=Math.floor(st/6)%8,k=st%6,[bass,ch]=SONG.chords[bar],sd=60/SONG.bpm/2;
-    if(k===0){osc(t,'sine',midi(bass-12),sd*5,.09,.02);ch.forEach(m=>osc(t,'triangle',midi(m-12),sd*6,.012,.9))}
-    if(k===2||k===4)piano(t,ch[k===2?1:2],1.4,.03);
-    if(k===0)piano(t,ch[0],1.6,.022);
-    SONG.mel[bar].forEach(([ms,m,len])=>{if(ms===k)piano(t,m,len*sd+.9,.05)})}
-  function pump(){const sd=60/SONG.bpm/2;while(next<ctx.currentTime+.4){play(step,next);next+=sd;step=(step+1)%48}}
-  function begin(){if(!(ctx=snd.ctx()))return;chain();clearInterval(timer);on=true;step=0;next=ctx.currentTime+.1;t0=performance.now();
+    const S=TRACKS[idx],bar=Math.floor(st/S.spb)%8,k=st%S.spb,[bass,ch]=S.chords[bar],sd=60/S.bpm/2;
+    if(k===0){osc(t,'sine',midi(bass-12),sd*(S.spb-1),.09,.02);ch.forEach(m=>osc(t,'triangle',midi(m-12),sd*S.spb,.012,.9));piano(t,ch[0],1.6,.022)}
+    const ai=S.arp.indexOf(k);if(ai>=0)piano(t,ch[(ai+1)%3],1.4,.03);
+    S.mel[bar].forEach(([ms,m,len])=>{if(ms===k)piano(t,m,len*sd+.9,.05)})}
+  function pump(){const S=TRACKS[idx],sd=60/S.bpm/2,total=8*S.spb;
+    while(next<ctx.currentTime+.4){play(step,next);next+=sd;step++;if(step>=total){step=0;loops++;if(loops>=2){loops=0;idx=(idx+1)%TRACKS.length;t0=performance.now();fire()}}}}
+  function begin(){if(!(ctx=snd.ctx()))return;chain();clearInterval(timer);on=true;step=0;loops=0;next=ctx.currentTime+.1;t0=performance.now();
     bus.gain.cancelScheduledValues(ctx.currentTime);bus.gain.setValueAtTime(bus.gain.value,ctx.currentTime);bus.gain.linearRampToValueAtTime(level,ctx.currentTime+3);timer=setInterval(pump,60);pump();fire()}
   function stop(){if(!ctx)return;clearInterval(timer);timer=null;on=false;bus.gain.cancelScheduledValues(ctx.currentTime);bus.gain.setValueAtTime(bus.gain.value,ctx.currentTime);bus.gain.linearRampToValueAtTime(0,ctx.currentTime+.7);fire()}
-  const fire=()=>subs.forEach(f=>f(on));
+  const fire=()=>subs.forEach(f=>f(on,idx));
+  function go(d){idx=(idx+d+TRACKS.length)%TRACKS.length;step=0;loops=0;t0=performance.now();if(on&&ctx)next=ctx.currentTime+.15;fire()}
   document.addEventListener('visibilitychange',()=>{if(!ctx)return;document.hidden?ctx.suspend():ctx.resume()});
   let gesture=false;
-  return{get on(){return on},sub:f=>subs.push(f),pos:()=>on?((performance.now()-t0)/1000)%(48*60/SONG.bpm/2):0,len:48*60/SONG.bpm/2,
+  return{get on(){return on},get idx(){return idx},sub:f=>subs.push(f),pos:()=>on?((performance.now()-t0)/1000)%TRACKS[idx].len:0,len:()=>TRACKS[idx].len,
     toggle(){gesture=true;if(on){stop();localStorage.setItem('fz-music','0')}else{begin();localStorage.setItem('fz-music','1')}},
+    next(){gesture=true;go(1);if(!on){begin();localStorage.setItem('fz-music','1')}},prev(){gesture=true;go(-1);if(!on){begin();localStorage.setItem('fz-music','1')}},
     firstGesture(){if(gesture)return;gesture=true;if(pref())begin()}}})();
 document.addEventListener('pointerdown',()=>music.firstGesture(),{capture:true,once:true});
-/* player popover, styled like a Mac mini player */
+/* player: previous, play or pause, next */
 const player=document.createElement('div');player.id='player';
-player.innerHTML=`<div class="pl-art"><svg viewBox="0 0 32 32" width="26" height="26"><path d="M12 24V9l12-3v15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="24" r="3" fill="#fff"/><circle cx="21.5" cy="21" r="3" fill="#fff"/></svg></div><div class="pl-m"><b>Soft background</b><span>Ghibli-style · instrumental</span><div class="pl-bar"><i></i></div></div><button class="pl-b" aria-label="Play or pause"></button>`;
+const ic=d=>`<svg viewBox="0 0 24 24" width="20" height="20">${d}</svg>`;
+player.innerHTML=`<div class="pl-art"><svg viewBox="0 0 32 32" width="26" height="26"><path d="M12 24V9l12-3v15" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="24" r="3" fill="#fff"/><circle cx="21.5" cy="21" r="3" fill="#fff"/></svg></div><div class="pl-m"><b id="pl-t">Soft Morning</b><span>Ghibli-style · instrumental</span><div class="pl-bar"><i></i></div></div><div class="pl-c"><button class="pl-s pl-prev" aria-label="Previous song">${ic('<path d="M7 5v14M19 5L9 12l10 7z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>')}</button><button class="pl-b" aria-label="Play or pause"></button><button class="pl-s pl-next" aria-label="Next song">${ic('<path d="M17 5v14M5 5l10 7-10 7z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>')}</button></div>`;
 document.body.append(player);
-const plB=player.querySelector('.pl-b'),plI=player.querySelector('.pl-bar i');
-const plUp=on=>{plB.innerHTML=on?'<svg viewBox="0 0 24 24" width="22" height="22"><rect x="6" y="5" width="4" height="14" rx="1.5" fill="#fff"/><rect x="14" y="5" width="4" height="14" rx="1.5" fill="#fff"/></svg>':'<svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5l11 7-11 7z" fill="#fff"/></svg>';document.body.classList.toggle('mus-on',on)};
-music.sub(plUp);plUp(false);plB.onclick=()=>music.toggle();
-setInterval(()=>{plI.style.width=(music.pos()/music.len*100)+'%'},400);
+const plB=player.querySelector('.pl-b'),plI=player.querySelector('.pl-bar i'),plT=player.querySelector('#pl-t');
+const plUp=(on,i)=>{plB.innerHTML=on?'<svg viewBox="0 0 24 24" width="22" height="22"><rect x="6" y="5" width="4" height="14" rx="1.5" fill="#fff"/><rect x="14" y="5" width="4" height="14" rx="1.5" fill="#fff"/></svg>':'<svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5l11 7-11 7z" fill="#fff"/></svg>';plT.textContent=TRACKS[music.idx].name;document.body.classList.toggle('mus-on',on)};
+music.sub(plUp);plUp(false);plB.onclick=()=>music.toggle();player.querySelector('.pl-prev').onclick=()=>music.prev();player.querySelector('.pl-next').onclick=()=>music.next();
+setInterval(()=>{plI.style.width=(music.pos()/music.len()*100)+'%'},400);
 
 /* ---------- the desktop: folders inside folders ---------- */
 const DOC=(n,panel,ext='pages')=>({n,t:'doc',panel,ext});
 const LINK=(n,href)=>({n,t:'link',href});
 const MILES=[
- {l:'2017',t:'Became a business lecturer',d:'Started my career teaching business to adult learners.'},
+ {l:'2017',t:'Became a business lecturer',d:'Began my career teaching business to adult learners.'},
  {l:'2019',t:'Started teaching IGCSE',d:'Began teaching IGCSE Accounting and Business Studies, with Economics alongside.'},
- {l:'2022',t:'Appointed as HOD',d:'Appointed Head of Department and fully focused on IGCSE.'},
- {l:'2023',t:'Started trading',d:'Began trading the markets with a plan: risk first, and a journal for everything.'},
+ {l:'2021',t:'Worked as a data analyst',d:'Worked at a bank as a data analyst, applying my data analytics training to real business problems.'},
+ {l:'2022',t:'Appointed as HOD',d:'Appointed Head of Department (HOD) and became fully focused on IGCSE.'},
+ {l:'2023',t:'Started trading',d:'Began trading the markets with a clear plan: risk first, and a journal for every trade.'},
  {l:'Today',t:'Started vibe coding',d:'Teaching and tuition, trading and vibe coding, all side by side.'}];
 const yearDoc=m=>({n:m.l==='Today'?'2025 – Today':m.l+' · '+m.t,t:'doc',ext:'txt',html:`<span class="k">Experience</span><h2>${m.l}</h2><h3>${m.t}</h3><p>${m.d}</p>`});
 const PROJ=[
@@ -163,7 +175,7 @@ function infoInto(inner,i){
   if(i===0){inner.insertAdjacentHTML('beforeend',`<div class="idc">${PASS}<div><span class="k">01 · About myself</span><h2>Fatin Faziana</h2><p class="lead">Teacher · Trader · Creator</p></div></div>`);
     const t=tplEl('p-about');t.querySelector('.k')?.remove();t.querySelector('h2')?.remove();inner.append(t);const hr=document.createElement('hr');hr.className='sep';inner.append(hr);inner.append(tplEl('p-contact'))}
   else if(i===1){inner.append(tplEl('p-exp'))}
-  else if(i===2){add('p-impact');add('p-how');inner.append(tplEl('p-events'))}
+  else if(i===2){add('p-impact');inner.append(tplEl('p-how'))}
   else if(i===3){add('p-trading');inner.append(tplEl('p-vibe'))}
   else if(i===4){inner.insertAdjacentHTML('beforeend',`<span class="k">Projects</span><h2>Things I've built.</h2><div class="pgrid">${PROJ.map(p=>`<div class="pc">${p.img?`<a href="${p.live||p.src}" target="_blank" rel="noopener"><img class="pimg" src="${p.img}" alt="${p.n} screenshot" loading="lazy"></a>`:''}<h4>${p.n}</h4><div class="tagrow">${p.tags.map(x=>`<span>${x}</span>`).join('')}</div><p>${p.d}</p>${p.note?`<p class="note">${p.note}</p>`:''}<div class="btns">${p.live?`<a class="btn p" href="${p.live}" target="_blank" rel="noopener">${p.liveName||'Open live site'} ↗</a>`:''}${p.src?`<a class="btn" href="${p.src}" target="_blank" rel="noopener">Source code ↗</a>`:''}</div></div>`).join('')}</div>`)}
   if(i===5)inner.insertAdjacentHTML('beforeend',`<span class="k">Achievements</span><h2>Things I'm proud of.</h2><div class="pgrid"><div class="pc"><h4>Dean's List awardee</h4><div class="tagrow"><span>Academic</span></div><p>Recognised on the Dean's List for academic performance.</p></div><div class="pc"><h4>2nd place, Data Analytics</h4><div class="tagrow"><span>Competition</span></div><p>Won second place in a Data Analytics competition, building a solution that filters unwanted comments: spam, nudity and scam.</p></div></div>`);
@@ -178,7 +190,7 @@ function openInfo(node){
   return el}
 
 /* ---------- Experience: a winding line that travels left to right, point to point ---------- */
-const JP=[[70,160],[285,64],[500,176],[715,64],[930,160]];
+const JP=[[70,160],[242,64],[414,176],[586,64],[758,176],[930,100]];
 let jI=0,jT=null,jAuto=true,jRaf=0,jLen=0,jL=[],jTot=0;
 function jgo(i,instant){
   jI=clamp(i,0,MILES.length-1);const m=MILES[jI],svg=$('#jsvg');if(!svg)return;
@@ -239,7 +251,7 @@ let renderer,scene,camera,wall,wallMat,folders=[],raycaster,hoverF=null,GL=false
 const mouse=new THREE.Vector2(9,9);let px=0,py=0;
 const vis=z=>{const h=2*(CAMZ-z)*Math.tan(THREE.MathUtils.degToRad(FOV/2));return{h,w:h*camera.aspect}};
 function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t}
-const SUB=['2 pages','5 milestones','3 pages','2 topics','5 projects','2 awards'];
+const SUB=['2 pages','6 milestones','3 pages','2 topics','5 projects','2 awards'];
 const mix=(a,b,t)=>'#'+[1,3,5].map(k=>Math.round(parseInt(a.substr(k,2),16)*(1-t)+parseInt(b.substr(k,2),16)*t).toString(16).padStart(2,'0')).join('');
 function makeFolder(node,i){
   const g=new THREE.Group(),m=(c,r=.6)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:.02}),P=node.pal;
@@ -337,7 +349,7 @@ const blurb=(id,sel,n=110)=>{const e=document.getElementById(id).content.querySe
 function peekHTML(i){
   if(i===0)return `<div class="pv about">${PASS}<div><b>Hi, I'm Fatin.</b><p>${blurb('p-about','.lead',130)}</p></div></div>`;
   if(i===1)return `<div class="pv"><b>The journey, year by year</b><div class="pj" style="--n:${MILES.length}">${MILES.map(m=>`<div><i></i><em>${m.l}</em><span>${m.t}</span></div>`).join('')}</div></div>`;
-  if(i===2)return `<div class="pv"><b>From struggling to A</b><p class="pq">“${blurb('p-impact','.quote',90)}”</p><div class="ps"><div><em>50% A</em><span>in my department's results</span></div><div><em>6+ yrs</em><span>IGCSE results work</span></div></div></div>`;
+  if(i===2)return `<div class="pv"><b>What I've done</b><div class="ps"><div><em>50%</em><span>turned into A students</span></div><div><em>99%</em><span>passing grade</span></div></div><p class="pq" style="margin-top:10px!important">Led students in a university competition and ran entrepreneurship events for the public.</p></div>`;
   if(i===3)return `<div class="pv"><div class="p2"><div><b>Trading</b><p>${blurb('p-trading','.lead',80)}</p></div><div><b>Vibe coding</b><p>${blurb('p-vibe','.lead',80)}</p></div></div></div>`;
   if(i===5)return `<div class="pv"><b>Achievements</b><div class="p2"><div><b>Dean's List</b><p>Academic awardee</p></div><div><b>2nd place</b><p>Data Analytics: filtering spam, nudity and scam comments</p></div></div></div>`;
   return `<div class="pv"><b>Things I've built</b><div class="pt5">${PROJ.map(p=>`<div><strong>${p.n}</strong><span>${p.tags[p.tags.length-1]}</span></div>`).join('')}</div></div>`}
