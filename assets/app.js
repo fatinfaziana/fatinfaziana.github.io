@@ -330,7 +330,7 @@ function layoutGL(){
     f.hit.position.set(f.home.x,f.home.y,.3);f.hit.scale.setScalar(sc);
     f.glow.position.set(f.home.x,f.home.y-FH*.62*sc,-.4);f.glow.scale.setScalar(sc)});
   if(wall){const v=vis(-7);
-    if(m){MW=null;wall.visible=false;if(aura)aura.visible=false;const hp=Math.max(300,Math.min((gapBot-gapTop)/.36,H*.715,W/.5617*.96));let mi=document.getElementById('mwall');if(!mi){mi=new Image();mi.id='mwall';mi.alt='Fatin Faziana';mi.src='assets/me.png';document.body.insertBefore(mi,document.body.firstChild)}mi.style.cssText=`position:fixed;z-index:1;pointer-events:none;bottom:${Math.round(H-(gapTop-.1*hp)-hp)}px;left:50%;transform:translateX(-50%);height:${hp}px;width:auto`;
+    if(m){MW=null;wall.visible=false;if(aura)aura.visible=false;const hp=Math.max(H,W/.5617);let mi=document.getElementById('mwall');if(!mi){mi=new Image();mi.id='mwall';mi.alt='Fatin Faziana';mi.src='assets/me.png';document.body.insertBefore(mi,document.body.firstChild)}mi.style.cssText=`position:fixed;z-index:1;pointer-events:none;bottom:${Math.round(H-(gapTop+14-.43*hp)-hp)}px;left:50%;transform:translateX(-50%);height:${hp}px;width:auto`;
       $('#mspacer').style.height='0'}
     else{MW=null;wall.visible=true;if(aura)aura.visible=true;const mi=document.getElementById('mwall');if(mi)mi.remove();const hh=v.h*1.12,ww=hh*(674/1200);wall.scale.set(ww,hh,1);wall.position.set(v.w*.28,-v.h*.06,-7);
       if(aura){aura.scale.set(ww*1.5,hh*.95,1);aura.position.set(wall.position.x,wall.position.y+hh*.05,-7.6)}}}
