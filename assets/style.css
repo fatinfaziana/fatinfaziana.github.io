@@ -297,3 +297,7 @@ html.mob,html.mob body{height:auto;min-height:100%;overflow-y:auto;overflow-x:hi
 #player.xs .pl-s{display:grid;width:24px;height:24px}#player.xs .pl-b{width:34px;height:34px}
 #player.xs .pl-c{justify-content:space-between;gap:2px}
 .mob #widget{display:block!important}.mob #clockw{display:grid!important}
+
+/* three controls only */
+#player .pl-list,#player .pl-rep,#plist{display:none!important}
+#player .pl-c{justify-content:center!important;gap:18px!important}
