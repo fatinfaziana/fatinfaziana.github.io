@@ -240,3 +240,5 @@ body{background:#f7efe4;color:var(--ink)}
 .dcin .jline{background:#c9b8a8}.dcin .jline::after{border-top-color:#fff}
 .dcin .jpin i{background:#fffdf9;border-color:#6d5f57}.dcin .jpin.seen i{background:#e8a3a0}.dcin .jpin.on i{background:#a3b58f}
 .dcin .jyr{color:#e8a3a0;-webkit-text-stroke:1px #4a3b35}
+.dcin .list li{background:none;border:0;color:var(--muted)}
+.dcin .list li b{color:var(--ink)}
