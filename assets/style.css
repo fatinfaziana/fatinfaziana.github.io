@@ -301,3 +301,7 @@ html.mob,html.mob body{height:auto;min-height:100%;overflow-y:auto;overflow-x:hi
 /* three controls only */
 #player .pl-list,#player .pl-rep,#plist{display:none!important}
 #player .pl-c{justify-content:center!important;gap:18px!important}
+
+#loading{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:linear-gradient(160deg,#fff8ee,#f9dcd8 60%,#dce6cf);transition:opacity .6s ease,visibility .6s;text-align:center;color:#4a3b35}
+#loading div{display:grid;gap:8px}#loading b{font:700 34px 'Cormorant Garamond',Georgia,serif}#loading span{font:700 12px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7f8c6a}
+body.ready #loading{opacity:0;visibility:hidden;pointer-events:none}
