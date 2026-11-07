@@ -329,7 +329,7 @@ function layoutGL(){
   if(wall){const v=vis(-7);
     if(m){const k=v.h/H,wpx=W*.98,hp=wpx*1200/674,docY=MY;MW={cy:docY+hp*.5,k};
       wall.scale.set(wpx*k,hp*k,1);wall.position.set((W*.02)*k*.5,0,-7);
-      if(aura){aura.scale.set(wpx*k*1.4,hp*k*.9,1);aura.position.x=wall.position.x}
+      if(aura){aura.scale.set(wpx*k*1.4,hp*k*.9,1);aura.position.x=wall.position.x;aura.position.z=-7.6}
       $('#mspacer').style.height=(docY+hp*.86)+'px'}
     else{MW=null;const hh=v.h*1.12,ww=hh*(674/1200);wall.scale.set(ww,hh,1);wall.position.set(v.w*.28,-v.h*.06,-7);
       if(aura){aura.scale.set(ww*1.5,hh*.95,1);aura.position.set(wall.position.x,wall.position.y+hh*.05,-7.6)}}}
@@ -393,7 +393,8 @@ function tick(now){
   camera.position.x+=((px*.55)-camera.position.x)*.06;camera.position.y+=((py*.32)-camera.position.y)*.06;camera.lookAt(0,0,0);
   if(wallMat)wallMat.opacity=Math.min(1,wallMat.opacity+.012);
   if(wall){wall.rotation.y=-px*.025;wall.rotation.x=py*.012}
-  flowers.forEach(f=>{f.y-=f.sp*.011;if(f.y<-f.vh/2-1)resetFlower(f,false);
+  const noFl=mobile()&&MY&&(MY-scrollY)<innerHeight*.92;
+  flowers.forEach(f=>{f.g.visible=!noFl;f.y-=f.sp*.011;if(f.y<-f.vh/2-1)resetFlower(f,false);
     const b=clamp((now-f.born)/1400),bl=b*b*(3-2*b);f.g.scale.setScalar(f.size*bl);f.inner.scale.set(1,1,.6+.4*bl);
     f.g.position.set(f.x0+Math.sin(t*.7+f.sw)*f.sa,f.y,f.z);f.g.rotation.x+=f.rs.x*.006;f.g.rotation.y+=f.rs.y*.006;f.g.rotation.z+=f.rs.z*.006});
   raycaster.setFromCamera(mouse,camera);hoverF=null;
