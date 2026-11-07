@@ -329,9 +329,10 @@ function layoutGL(){
   if(wall){const v=vis(-7);
     if(m){const k=v.h/H,wpx=W*.98,hp=wpx*1200/674,docY=MY;MW={cy:docY+hp*.5,k};
       wall.scale.set(wpx*k,hp*k,1);wall.position.set((W*.02)*k*.5,0,-7);
+      wall.visible=false;if(aura)aura.visible=false;let mi=document.getElementById('mwall');if(!mi){mi=new Image();mi.id='mwall';mi.alt='Fatin Faziana';mi.src='assets/me.png';document.body.insertBefore(mi,document.body.firstChild)}mi.style.cssText=`position:absolute;z-index:1;pointer-events:none;top:${docY}px;left:${(W-wpx)/2+W*.01}px;width:${wpx}px;height:${hp}px;opacity:${wallMat&&wallMat.opacity>=1?1:1}`;
       if(aura){aura.scale.set(wpx*k*1.4,hp*k*.9,1);aura.position.x=wall.position.x;aura.position.z=-7.6}
       $('#mspacer').style.height=(docY+hp*.86)+'px'}
-    else{MW=null;const hh=v.h*1.12,ww=hh*(674/1200);wall.scale.set(ww,hh,1);wall.position.set(v.w*.28,-v.h*.06,-7);
+    else{MW=null;wall.visible=true;if(aura)aura.visible=true;const mi=document.getElementById('mwall');if(mi)mi.remove();const hh=v.h*1.12,ww=hh*(674/1200);wall.scale.set(ww,hh,1);wall.position.set(v.w*.28,-v.h*.06,-7);
       if(aura){aura.scale.set(ww*1.5,hh*.95,1);aura.position.set(wall.position.x,wall.position.y+hh*.05,-7.6)}}}
 }
 let aura=null,PPU=60,MW=null,MY=0,LW=0,LH=0;
