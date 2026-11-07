@@ -310,3 +310,14 @@ body.ready #loading{opacity:0;visibility:hidden;pointer-events:none}
 #lightbox{position:fixed;inset:0;z-index:10000;display:none;place-items:center;background:rgba(74,59,53,.72);backdrop-filter:blur(6px);padding:16px}
 #lightbox.on{display:grid}#lightbox img{max-width:100%;max-height:100%;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);background:#fff}
 #lightbox button{position:absolute;top:14px;right:16px;width:40px;height:40px;border-radius:50%;border:0;background:#fffaf3;color:#4a3b35;font:700 24px/1 sans-serif;cursor:pointer}
+
+/* phone: one screen, photo as the background */
+html.mob,html.mob body{height:100%;overflow:hidden}
+.mob #widget,.mob #clockw,.mob #player{position:fixed}
+.mob #widget{padding:12px 16px;background:rgba(255,252,247,.62)}.mob #widget .wn{font-size:23px}.mob #widget .ws{font-size:10px;margin-top:3px}
+.mob #widget .wp{font-size:12.5px;line-height:1.45;margin-top:6px}.mob #widget .wh{display:none}
+.mob #clockw{grid-template-columns:1fr;grid-template-rows:1fr auto auto;row-gap:4px;column-gap:0;padding:8px;align-content:stretch}
+.mob #clockw .mp{grid-row:auto;height:100%;min-height:0}.mob #clockw .cw-t{align-self:end;font-size:15px}.mob #clockw .cw-d{display:none}
+.mob #player{background:rgba(255,252,247,.7)}
+
+.tight #widget .wp{display:none}

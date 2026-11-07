@@ -303,15 +303,18 @@ function layoutGL(){
   let cx=i=>0,cy=i=>0,sc,gapY;
   document.documentElement.classList.toggle('mob',m);PPU=ppu;
   if(m){
-    const side=12,cw=(W-side*2)/3,rowH=Math.min(118,cw*1.08),top=48;
+    const side=12,cw=(W-side*2)/3,top=44,dockH=84,rowH=Math.min(100,cw*1.0,(H-top-dockH)*.15);
     sc=Math.min(cw*.9/(FW*ppu),rowH*.78/(FH*ppu));
     cx=i=>side+cw*((i%3)+.5);cy=i=>top+rowH*(Math.floor(i/3)+.5);
-    [aw,cm,pl].forEach(e=>{e.style.display='';e.style.left=side+'px';e.style.width=(W-side*2)+'px';e.style.height='';e.style.bottom='auto'});
-    pl.classList.remove('sm','xs');
-    let y=top+rowH*2+10;pl.style.top=y+'px';y+=pl.offsetHeight+10;
-    aw.style.top=y+'px';y+=aw.offsetHeight+10;
-    cm.style.top=y+'px';y+=cm.offsetHeight+10;
-    MY=y;
+    const gap=8,plW=Math.round((W-side*2-gap)*.6),cmW=W-side*2-gap-plW,y2=top+rowH*2+8;
+    [aw,cm,pl].forEach(e=>{e.style.display='';e.style.height='';e.style.bottom='auto'});
+    pl.classList.toggle('sm',plW<262);pl.classList.toggle('xs',plW<190);
+    pl.style.left=side+'px';pl.style.width=plW+'px';pl.style.top=y2+'px';
+    cm.style.left=(side+plW+gap)+'px';cm.style.width=cmW+'px';cm.style.top=y2+'px';cm.style.height=pl.offsetHeight+'px';
+    aw.style.left=side+'px';aw.style.width=(W-side*2)+'px';aw.style.top='auto';aw.style.bottom=dockH+'px';
+    document.documentElement.classList.toggle('tight',H<740);
+    MY=0;
+    gapTop=y2+pl.offsetHeight+6;gapBot=H-dockH-aw.offsetHeight-6;
   }else{
     const leftX=Math.round(W*.035),leftW=Math.min(W*.57,860),top=46,dock=100;
     aw.style.display='';cm.style.display='';pl.style.display='';aw.style.top='auto';$('#mspacer').style.height='0';
@@ -327,15 +330,12 @@ function layoutGL(){
     f.hit.position.set(f.home.x,f.home.y,.3);f.hit.scale.setScalar(sc);
     f.glow.position.set(f.home.x,f.home.y-FH*.62*sc,-.4);f.glow.scale.setScalar(sc)});
   if(wall){const v=vis(-7);
-    if(m){const k=v.h/H,wpx=W*.98,hp=wpx*1200/674,docY=MY;MW={cy:docY+hp*.5,k};
-      wall.scale.set(wpx*k,hp*k,1);wall.position.set((W*.02)*k*.5,0,-7);
-      wall.visible=false;if(aura)aura.visible=false;let mi=document.getElementById('mwall');if(!mi){mi=new Image();mi.id='mwall';mi.alt='Fatin Faziana';mi.src='assets/me.png';document.body.insertBefore(mi,document.body.firstChild)}mi.style.cssText=`position:absolute;z-index:1;pointer-events:none;top:${docY}px;left:${(W-wpx)/2+W*.01}px;width:${wpx}px;height:${hp}px;opacity:${wallMat&&wallMat.opacity>=1?1:1}`;
-      if(aura){aura.scale.set(wpx*k*1.4,hp*k*.9,1);aura.position.x=wall.position.x;aura.position.z=-7.6}
-      $('#mspacer').style.height=(docY+hp*.86)+'px'}
+    if(m){MW=null;wall.visible=false;if(aura)aura.visible=false;const hp=Math.max(300,Math.min((gapBot-gapTop)/.36,H*.715,W/.5617*.96));let mi=document.getElementById('mwall');if(!mi){mi=new Image();mi.id='mwall';mi.alt='Fatin Faziana';mi.src='assets/me.png';document.body.insertBefore(mi,document.body.firstChild)}mi.style.cssText=`position:fixed;z-index:1;pointer-events:none;bottom:${Math.round(H-(gapTop-.1*hp)-hp)}px;left:50%;transform:translateX(-50%);height:${hp}px;width:auto`;
+      $('#mspacer').style.height='0'}
     else{MW=null;wall.visible=true;if(aura)aura.visible=true;const mi=document.getElementById('mwall');if(mi)mi.remove();const hh=v.h*1.12,ww=hh*(674/1200);wall.scale.set(ww,hh,1);wall.position.set(v.w*.28,-v.h*.06,-7);
       if(aura){aura.scale.set(ww*1.5,hh*.95,1);aura.position.set(wall.position.x,wall.position.y+hh*.05,-7.6)}}}
 }
-let aura=null,PPU=60,MW=null,MY=0,LW=0,LH=0;
+let gapTop=0,gapBot=0,aura=null,PPU=60,MW=null,MY=0,LW=0,LH=0;
 let flowers=[];
 function makeFlowers(){
   const cols=['#ffffff','#fbe4de','#f6d3cd','#f3ead8'];
@@ -394,7 +394,7 @@ function tick(now){
   camera.position.x+=((px*.55)-camera.position.x)*.06;camera.position.y+=((py*.32)-camera.position.y)*.06;camera.lookAt(0,0,0);
   if(wallMat)wallMat.opacity=Math.min(1,wallMat.opacity+.012);
   if(wall){wall.rotation.y=-px*.025;wall.rotation.x=py*.012}
-  const noFl=mobile()&&MY&&(MY-scrollY)<innerHeight*.92;
+  const noFl=mobile();
   flowers.forEach(f=>{f.g.visible=!noFl;f.y-=f.sp*.011;if(f.y<-f.vh/2-1)resetFlower(f,false);
     const b=clamp((now-f.born)/1400),bl=b*b*(3-2*b);f.g.scale.setScalar(f.size*bl);f.inner.scale.set(1,1,.6+.4*bl);
     f.g.position.set(f.x0+Math.sin(t*.7+f.sw)*f.sa,f.y,f.z);f.g.rotation.x+=f.rs.x*.006;f.g.rotation.y+=f.rs.y*.006;f.g.rotation.z+=f.rs.z*.006});
