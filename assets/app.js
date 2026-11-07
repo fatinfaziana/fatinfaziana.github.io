@@ -425,3 +425,10 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&wins.length)closeWin(wins[wi
   else requestAnimationFrame(tick);
   document.body.classList.add('ready');
 })();
+
+/* tap a screenshot to view it larger */
+(()=>{const lb=document.createElement('div');lb.id='lightbox';lb.innerHTML='<button aria-label="Close">×</button><img alt="">';document.body.appendChild(lb);
+const img=lb.querySelector('img'),close=()=>lb.classList.remove('on');
+const open=el=>{img.src=el.currentSrc||el.src;img.alt=el.alt||'';lb.classList.add('on')};
+document.addEventListener('click',e=>{const z=e.target.closest&&e.target.closest('.zoomable');if(z){e.preventDefault();open(z)}else if(lb.classList.contains('on'))close()},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&lb.classList.contains('on')){close();e.stopImmediatePropagation()}else if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('zoomable')){e.preventDefault();open(e.target)}},true)})();

@@ -305,3 +305,8 @@ html.mob,html.mob body{height:auto;min-height:100%;overflow-y:auto;overflow-x:hi
 #loading{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:linear-gradient(160deg,#fff8ee,#f9dcd8 60%,#dce6cf);transition:opacity .6s ease,visibility .6s;text-align:center;color:#4a3b35}
 #loading div{display:grid;gap:8px}#loading b{font:700 34px 'Cormorant Garamond',Georgia,serif}#loading span{font:700 12px 'Nunito',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7f8c6a}
 body.ready #loading{opacity:0;visibility:hidden;pointer-events:none}
+
+.zoomable{cursor:zoom-in}
+#lightbox{position:fixed;inset:0;z-index:10000;display:none;place-items:center;background:rgba(74,59,53,.72);backdrop-filter:blur(6px);padding:16px}
+#lightbox.on{display:grid}#lightbox img{max-width:100%;max-height:100%;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);background:#fff}
+#lightbox button{position:absolute;top:14px;right:16px;width:40px;height:40px;border-radius:50%;border:0;background:#fffaf3;color:#4a3b35;font:700 24px/1 sans-serif;cursor:pointer}
