@@ -7,20 +7,31 @@
 <meta name="description" content="Fatin Faziana: IGCSE Accounting, Economics & Business Studies teacher, trader and creator.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=38">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="assets/style.css?v=88">
 </head>
 <body>
+<div id="bg"></div>
 <div id="gl"></div>
-<div class="vig"></div>
-<header class="brand"><div class="wm">Fatin Faziana</div><div class="sub">Teacher · Trader · Creator</div></header>
-<nav class="crumb" id="crumb" aria-label="Where you are"></nav>
-<div class="stage-ui"><p id="cap" class="cap"></p><div class="chips" id="chips"></div></div>
-<button id="mus" class="chip2 snd mus" aria-label="Change background music">♪ Music</button>
-<button id="snd" class="chip2 snd" aria-label="Toggle click sounds">Sound on</button>
-<div id="fade"></div>
-<div id="veil" role="dialog" aria-modal="true"><div id="panel"><button id="x" aria-label="Close">×</button><div id="pc"></div></div></div>
+<header id="menubar">
+ <div class="mbl"><span class="logo" aria-hidden="true">F</span><b>Finder</b><span class="mi">File</span><span class="mi">Edit</span><span class="mi">View</span><button class="mi" id="gomenu">Go</button><span class="mi">Window</span><span class="mi">Help</span></div>
+ <div class="mbr"><button id="snd" class="mi" aria-label="Toggle sounds">Sound on</button>
+  <svg class="mic" viewBox="0 0 28 14" width="26" height="13" aria-hidden="true"><rect x=".7" y=".7" width="23" height="12.6" rx="3.5" fill="none" stroke="currentColor" opacity=".7"/><rect x="2.3" y="2.3" width="16" height="9.4" rx="2" fill="currentColor"/><rect x="25" y="4.5" width="2" height="5" rx="1" fill="currentColor" opacity=".7"/></svg>
+  <span id="clock" class="mi"></span></div>
+</header>
+<div id="menu" role="menu"></div>
+<div id="peek"></div>
+<a id="clockw" href="https://www.google.com/maps/search/?api=1&query=Shah+Alam,+Selangor" target="_blank" rel="noopener" aria-label="Based in Shah Alam, Selangor"><svg viewBox="0 0 220 120" class="mp" preserveAspectRatio="xMidYMid slice"><rect width="220" height="120" rx="14" fill="#f1e7d9"/><g fill="none" stroke-linecap="round"><path d="M-10 90 C50 70 90 100 150 60 S210 40 235 30" stroke="#b5c4a3" stroke-width="6" opacity=".9"/><path d="M30 -5 L70 130" stroke="#f0bdb3" stroke-width="5" opacity=".9"/><path d="M130 -5 C120 40 160 80 150 130" stroke="#c9d5df" stroke-width="5" opacity=".9"/><path d="M-5 30 L235 62" stroke="#ffffff" stroke-width="3" opacity=".8"/><path d="M-5 108 L235 100" stroke="#ffffff" stroke-width="3" opacity=".8"/></g><circle cx="118" cy="58" r="22" fill="#e8a3a0" opacity=".3" class="pu"/><path d="M118 36c-8 0-13 6-13 13 0 10 13 24 13 24s13-14 13-24c0-7-5-13-13-13z" fill="#d97b74"/><circle cx="118" cy="49" r="5" fill="#fff"/></svg><div class="cw-t">Shah Alam</div><div class="cw-d">Selangor · Malaysia</div></a>
+<aside id="widget"><div class="wn">Fatin Faziana</div><div class="ws">Teacher · Trader · Creator</div><p class="wp">Hello, I'm Fatin. I'm an educator from Malaysia who teaches IGCSE Accounting, Economics and Business Studies. Outside the classroom I trade the markets with a plan and build small tools with AI.</p><div class="wh">Based in the Shah Alam area, Selangor · Open a folder above to explore.</div></aside>
+<div id="wins"></div>
+<nav id="dock" aria-label="Dock"></nav>
+<div id="fallback"></div>
 
+<template id="p-contact" data-c="#fde38a">
+<span class="k">01 · About myself</span><h2>Get in touch.</h2>
+<p class="lead">For IGCSE Accounting, Economics and Business Studies tuition, or just to say hello.</p>
+<div class="btns"><a class="btn p" href="https://my-first-project-y3iv.vercel.app/" target="_blank" rel="noopener">Tuition enquiries ↗</a><a class="btn" href="mailto:fatinfazianalearn@gmail.com">Email me</a><a class="btn" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">GitHub ↗</a></div>
+</template>
 <template id="p-about" data-c="#fde38a">
 <span class="k">01 · About myself</span><h2>Hi, I'm Fatin.</h2>
 <p class="lead">An educator from Malaysia who teaches IGCSE Accounting, Economics and Business Studies, trades the markets with a plan, and builds small tools in her spare time.</p>
@@ -32,23 +43,26 @@
 <div class="btns"><a class="btn p" href="https://my-first-project-y3iv.vercel.app/" target="_blank" rel="noopener">Tuition enquiries ↗</a><a class="btn" href="mailto:fatinfazianalearn@gmail.com">Email me</a><a class="btn" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">GitHub ↗</a></div>
 </template>
 
-<template id="p-exp" data-c="#ef95b0">
-<span class="k">02 · Experience</span><h2>A timeline.</h2>
-<ol class="tl">
-<li><span class="yr">2017</span><b>Started teaching</b><span class="d">Began as a business lecturer for adult learners.</span></li>
-<li><span class="yr">2019</span><b>Moved into IGCSE</b><span class="d">Started teaching Accounting and Business Studies, with Economics alongside.</span></li>
-<li><span class="yr">2022</span><b>Leading and tutoring</b><span class="d">Became a Department Leader and began independent one-to-one tuition. Lecturing concluded after five years.</span></li>
-<li><span class="yr">2025</span><b>Full focus on students and craft</b><span class="d">Department leadership completed. Today: tuition, trading and building projects.</span></li>
-</ol>
+<template id="p-exp" data-c="#ef95b0" data-wide="1">
+<span class="k">02 · Experience</span><h2>The journey, year by year.</h2>
+<div class="jy" id="jy">
+<div class="jroad" id="jroad"><div class="jline"></div><div class="jfill" id="jfill"></div>
+<div class="jcar" id="jcar"><svg viewBox="0 0 64 30" width="54"><rect x="2" y="12" width="60" height="12" rx="6" fill="#ef95b0" stroke="#4a2f4d" stroke-width="2"/><path d="M16 12l7-9h18l8 9z" fill="#fffaf5" stroke="#4a2f4d" stroke-width="2"/><circle cx="16" cy="25" r="5" fill="#2e2034"/><circle cx="48" cy="25" r="5" fill="#2e2034"/><rect x="2" y="17" width="60" height="3" fill="#fde38a"/></svg></div>
+<button class="jpin" style="left:10%"><i></i><b>2017</b></button><button class="jpin" style="left:36.67%"><i></i><b>2019</b></button><button class="jpin" style="left:63.33%"><i></i><b>2022</b></button><button class="jpin" style="left:90%"><i></i><b>Today</b></button></div>
+<div class="jcard" id="jcard"><span class="jyr" id="jyr"></span><h3 id="jt"></h3><p id="jd"></p></div>
+<div class="jbtns"><button class="btn" id="jprev">‹ Earlier</button><button class="btn p" id="jnext">Next year ›</button></div>
+</div>
 </template>
 
 <template id="p-impact" data-c="#cfc2ea">
 <span class="k">03 · Contributions</span><h2>From struggling to A.</h2>
 <div class="quote">Every student can improve. They just need someone to find where it breaks.</div>
 <div class="row"><div><em>50% A</em><span>in Accounting, Business Studies and Economics under my leadership</span></div><div><em>6+ yrs</em><span>of IGCSE results work</span></div></div>
-<h3>How I do it</h3>
+</template>
+<template id="p-how" data-c="#cfc2ea"><span class="k">03 · Contributions</span><h2>How I do it.</h2>
 <ol class="steps"><li><b>Find the gap.</b> Diagnose exactly which topics and habits cost marks.</li><li><b>Rebuild understanding.</b> Explain step by step until it makes sense, not just memorised.</li><li><b>Practise with purpose.</b> Past-year topical questions, checked thoroughly.</li><li><b>Exam technique.</b> Timing and mark-scheme thinking, so knowledge turns into grades.</li></ol>
-<h3>Beyond the classroom</h3>
+</template>
+<template id="p-events" data-c="#cfc2ea"><span class="k">03 · Contributions</span><h2>Beyond the classroom.</h2>
 <ul class="list"><li>Organised <b>entrepreneurship events</b> for students, which received national media coverage.</li><li>Mentored a student project to <b>3rd place</b> at a university competition.</li></ul>
 </template>
 
@@ -69,26 +83,27 @@
 </template>
 
 <template id="p-projects" data-c="#ef95b0" data-wide="1">
-<span class="k">★ · Projects</span><h2>Things I have built.</h2>
-<p>When a tool I need does not exist, I make it. Pick any card to open the project.</p>
+<span class="k">Stop 05 · Projects</span><h2>Things I have built.</h2>
+<p>When a tool I need does not exist, I make it. Pick any ticket to open the project.</p>
 <div class="pgrid">
-<article class="pcard" style="--cc:#fde38a"><div class="pt"><b>2<i class="r">♥</i></b><span>Free guide</span></div><h4>Learn Islam 101</h4><p>A guide to wudu, prayer, short surahs, duas and zikir for new and returning Muslims, in English and Malay.</p><div class="tagrow"><span>TypeScript</span><span>Live</span></div><div class="btns"><a class="btn p" href="https://fatinfaziana.github.io/Learn-Islam-101/" target="_blank" rel="noopener">Open ↗</a><a class="btn" href="https://github.com/fatinfaziana/Learn-Islam-101" target="_blank" rel="noopener">Source ↗</a></div></article>
-<article class="pcard" style="--cc:#cfc2ea"><div class="pt"><b>3<i>♠</i></b><span>Marking helper</span></div><h4>mark4you</h4><p>A marking helper for IGCSE teachers, with AI-assisted routes that keep the API key safely on the server.</p><div class="tagrow"><span>TypeScript</span><span>In development</span></div><div class="btns"><a class="btn" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">GitHub ↗</a></div></article>
-<article class="pcard" style="--cc:#f8c4a4"><div class="pt"><b>4<i class="r">♦</i></b><span>Chart desk</span></div><h4>Trade 4 you</h4><p>A chart-analysis desk for crypto, forex, gold and stocks: rule-based BUY / SELL / WAIT checklists, news warnings, alerts and a backtester.</p><div class="tagrow"><span>Node.js</span><span>Mac app</span></div><p class="note">Decision support only, not financial advice.</p><div class="btns"><a class="btn" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">GitHub ↗</a></div></article>
-<article class="pcard" style="--cc:#ef95b0"><div class="pt"><b>5<i>♣</i></b><span>Tuition site</span></div><h4>Asterisk Academy</h4><p>The website for my IGCSE tuition: an availability calendar, package selection and an instant invoice for parents.</p><div class="tagrow"><span>Web</span><span>Live</span></div><div class="btns"><a class="btn p" href="https://my-first-project-y3iv.vercel.app/" target="_blank" rel="noopener">Open ↗</a></div></article>
-<article class="pcard" style="--cc:#fffaf5"><div class="pt"><b>6<i class="r">♥</i></b><span>All my code</span></div><h4>GitHub</h4><p>Every project, in one place.</p><div class="btns"><a class="btn p" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">Visit profile ↗</a></div></article>
+<article class="pcard" style="--cc:#fde38a"><div class="pt"><b>№ 01</b><span>Free guide</span></div><h4>Learn Islam 101</h4><p>A guide to wudu, prayer, short surahs, duas and zikir for new and returning Muslims, in English and Malay.</p><div class="tagrow"><span>TypeScript</span><span>Live</span></div><div class="btns"><a class="btn p" href="https://fatinfaziana.github.io/Learn-Islam-101/" target="_blank" rel="noopener">Open ↗</a><a class="btn" href="https://github.com/fatinfaziana/Learn-Islam-101" target="_blank" rel="noopener">Source ↗</a></div></article>
+<article class="pcard" style="--cc:#cfc2ea"><div class="pt"><b>№ 02</b><span>Marking helper</span></div><h4>mark4you</h4><p>A marking helper for IGCSE teachers, with AI-assisted routes that keep the API key safely on the server.</p><div class="tagrow"><span>TypeScript</span><span>In development</span></div><div class="btns"><a class="btn" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">GitHub ↗</a></div></article>
+<article class="pcard" style="--cc:#f8c4a4"><div class="pt"><b>№ 03</b><span>Chart desk</span></div><h4>Trade 4 you</h4><p>A chart-analysis desk for crypto, forex, gold and stocks: rule-based BUY / SELL / WAIT checklists, news warnings, alerts and a backtester.</p><div class="tagrow"><span>Node.js</span><span>Mac app</span></div><p class="note">Decision support only, not financial advice.</p><div class="btns"><a class="btn" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">GitHub ↗</a></div></article>
+<article class="pcard" style="--cc:#ef95b0"><div class="pt"><b>№ 04</b><span>Tuition site</span></div><h4>Asterisk Academy</h4><p>The website for my IGCSE tuition: an availability calendar, package selection and an instant invoice for parents.</p><div class="tagrow"><span>Web</span><span>Live</span></div><div class="btns"><a class="btn p" href="https://my-first-project-y3iv.vercel.app/" target="_blank" rel="noopener">Open ↗</a></div></article>
+<article class="pcard" style="--cc:#fffaf5"><div class="pt"><b>№ 05</b><span>All my code</span></div><h4>GitHub</h4><p>Every project, in one place.</p><div class="btns"><a class="btn p" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">Visit profile ↗</a></div></article>
 </div>
 </template>
 
 <template id="p-beyond" data-c="#f8c4a4" data-wide="1">
-<span class="k">J♣ · Beyond teaching</span><h2>Two more hands I play.</h2>
+<span class="k">Stop 04 · Beyond teaching</span><h2>Two more rides.</h2>
 <p>Outside the classroom I trade with a plan and build tools with AI.</p>
 <div class="pgrid two">
-<article class="pcard" style="--cc:#cfc2ea"><div class="pt"><b>2<i class="r">♦</i></b><span>Trading</span></div><h4>Trading</h4><p>I treat trading like exam prep: study it, practise it, review it.</p><ul class="list"><li><b>Risk first.</b> Know the loss before entering.</li><li><b>Trade the plan.</b> Defined setups and exits.</li><li><b>Journal everything.</b> Review every week.</li><li><b>Keep learning.</b> Markets change.</li></ul><p class="note">A personal approach, not financial advice. Trading involves risk of loss.</p></article>
-<article class="pcard" style="--cc:#fde38a"><div class="pt"><b>3<i>♣</i></b><span>Vibe coding</span></div><h4>Vibe coding</h4><p>When a tool I need does not exist, I describe it, build it with AI, and refine it until it works.</p><div class="tagrow"><span>Websites</span><span>Teaching tools</span><span>Trading helpers</span></div><p>More details coming soon.</p><div class="btns"><a class="btn p" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">See it on GitHub ↗</a></div></article>
+<article class="pcard" style="--cc:#cfc2ea"><div class="pt"><b>№ 06</b><span>Trading</span></div><h4>Trading</h4><p>I treat trading like exam prep: study it, practise it, review it.</p><ul class="list"><li><b>Risk first.</b> Know the loss before entering.</li><li><b>Trade the plan.</b> Defined setups and exits.</li><li><b>Journal everything.</b> Review every week.</li><li><b>Keep learning.</b> Markets change.</li></ul><p class="note">A personal approach, not financial advice. Trading involves risk of loss.</p></article>
+<article class="pcard" style="--cc:#fde38a"><div class="pt"><b>№ 07</b><span>Vibe coding</span></div><h4>Vibe coding</h4><p>When a tool I need does not exist, I describe it, build it with AI, and refine it until it works.</p><div class="tagrow"><span>Websites</span><span>Teaching tools</span><span>Trading helpers</span></div><p>More details coming soon.</p><div class="btns"><a class="btn p" href="https://github.com/fatinfaziana" target="_blank" rel="noopener">See it on GitHub ↗</a></div></article>
 </div>
 </template>
 
-<script type="module" src="assets/app.js?v=38"></script>
+
+<script type="module" src="assets/app.js?v=88"></script>
 </body>
 </html>
