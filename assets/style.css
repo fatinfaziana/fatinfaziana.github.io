@@ -321,3 +321,6 @@ html.mob,html.mob body{height:100%;overflow:hidden}
 .mob #player{background:rgba(255,252,247,.7)}
 
 .tight #widget .wp{display:none}
+
+#clockw .cw-b{font:700 10px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#8a9a76;padding:0 4px;margin-bottom:2px}
+.mob #clockw .cw-b{align-self:end;padding:0;margin:0}.mob #clockw .cw-t{align-self:start}
